@@ -4,13 +4,20 @@ interface ImageProps extends React.ImgHTMLAttributes<HTMLImageElement> {
   src?: string;
   alt: string;
   fallBack?: string;
+  sizes?: string;
 }
 
 const defaultFallbackImage = "https://example.com/default-image.png";
 
 const Image = forwardRef<HTMLImageElement, ImageProps>(
   (
-    { src, alt, fallBack: customFallback = defaultFallbackImage, ...props },
+    {
+      src,
+      alt,
+      sizes = "small",
+      fallBack: customFallback = defaultFallbackImage,
+      ...props
+    },
     ref
   ) => {
     const [fallBack, setFallBack] = useState("");
@@ -19,9 +26,11 @@ const Image = forwardRef<HTMLImageElement, ImageProps>(
       setFallBack(customFallback);
     };
 
+    const classes = "overflow-hidden";
+
     return (
       <img
-        className="overflow-hidden"
+        className={classes}
         ref={ref}
         src={fallBack || src}
         alt={alt}
