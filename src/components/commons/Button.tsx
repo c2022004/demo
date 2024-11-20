@@ -1,6 +1,5 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import cx from "classnames";
 
 // Define types for props
 interface BaseButtonProps
@@ -27,11 +26,6 @@ interface BaseButtonProps
 }
 
 // Type for the component itself
-// type ButtonProps = BaseButtonProps & {
-//   ref?: React.ForwardedRef<HTMLButtonElement | HTMLAnchorElement>;
-// };
-
-// Type for the component that will be rendered (button, a, or Link)
 type ComponentType = "button" | "a" | typeof Link;
 
 const Button = React.forwardRef<
@@ -43,7 +37,6 @@ const Button = React.forwardRef<
       className,
       to,
       href,
-      // title,
       primary = false,
       outline = false,
       onlyicon = false,
@@ -85,30 +78,34 @@ const Button = React.forwardRef<
           delete props[key];
         }
       });
+      props.disabled = true; // Disable the button or link
     }
 
-    const classes = cx("wrapper", {
-      [className as string]: className,
-      primary,
-      outline,
-      onlyicon,
-      text,
-      rounded,
-      disable,
-      textborder,
-      small,
-      "w-full": large,
-      "bg-white": background,
-      "flex justify-center items-center": flex,
-    });
+    // Build the className manually
+    let classes =
+      className ||
+      "outline-none bg-yellow-100 hover:outline-none border-none hover:bg-yellow-200 ";
+
+    // Conditional class application
+    if (primary) classes += " primary";
+    if (outline) classes += " outline";
+    if (onlyicon) classes += " onlyicon";
+    if (text) classes += " text";
+    if (disable) classes += " disable";
+    if (rounded) classes += " rounded";
+    if (textborder) classes += " textborder";
+    if (small) classes += " small";
+    if (large) classes += " w-full"; // Full width when large
+    if (background) classes += " bg-white";
+    if (flex) classes += " flex justify-center items-center";
 
     props.className = classes;
 
     return (
       <Component {...props} ref={ref}>
-        {lefticon && <span className={cx("icon")}>{lefticon}</span>}
-        <span className={cx("title")}>{children}</span>
-        {righticon && <span className={cx("icon")}>{righticon}</span>}
+        {lefticon && <span className="mr-2">{lefticon}</span>}
+        <span>{children}</span>
+        {righticon && <span className="ml-2">{righticon}</span>}
       </Component>
     );
   }

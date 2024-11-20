@@ -1,38 +1,31 @@
 import { useState, forwardRef } from "react";
+import defaultImage from "../../assets/img/defaultImage.jpg";
 
 interface ImageProps extends React.ImgHTMLAttributes<HTMLImageElement> {
   src?: string;
-  alt: string;
+  alt?: string;
   fallBack?: string;
-  sizes?: string;
+  imgSmall?: boolean;
+  classes?: string;
 }
 
-const defaultFallbackImage = "https://example.com/default-image.png";
-
 const Image = forwardRef<HTMLImageElement, ImageProps>(
-  (
-    {
-      src,
-      alt,
-      sizes = "small",
-      fallBack: customFallback = defaultFallbackImage,
-      ...props
-    },
-    ref
-  ) => {
+  ({ src, alt, imgSmall, classes, ...props }, ref) => {
     const [fallBack, setFallBack] = useState("");
 
     const handleError = () => {
-      setFallBack(customFallback);
+      setFallBack(defaultImage);
     };
 
-    const classes = "overflow-hidden";
-
+    classes = " overflow-hidden object-cover";
+    if (imgSmall) {
+      classes += " w-22";
+    }
     return (
       <img
         className={classes}
         ref={ref}
-        src={fallBack || src}
+        src={src || fallBack}
         alt={alt}
         {...props}
         onError={handleError}
