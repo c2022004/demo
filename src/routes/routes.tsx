@@ -65,7 +65,7 @@ const userConfig = [
   {
     path: userRoutes.comment,
     component: Comment,
-    layout: OnlyContentLayout,
+    layout: DefaultLayout,
     isPrivate: true,
   },
 ];
