@@ -1,5 +1,6 @@
-function commnet() {
-  return <></>;
+import React from "react";
+function Commnet() {
+  return <>hello</>;
 }
 
-export default commnet;
+export default Commnet;

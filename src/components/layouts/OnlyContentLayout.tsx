@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
 import { Outlet } from "react-router-dom";
-
+import React from "react";
 interface LoginProps {
   children: ReactNode;
 }

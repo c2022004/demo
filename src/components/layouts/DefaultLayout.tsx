@@ -1,7 +1,7 @@
 import { LayoutRouteProps, Outlet } from "react-router-dom";
 import Footer from "../commons/Footer";
 import Header from "../commons/Header";
-import { FC } from "react";
+import React, { FC } from "react";
 
 const DefaultLayout: FC<LayoutRouteProps> = ({ children }) => {
   return (

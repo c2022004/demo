@@ -1,6 +1,7 @@
 import giay1 from "../../assets/img/giay1.jpg";
 import Image from "../../components/commons/Image";
 
+import React from "react";
 function AddToCart() {
   return (
     <>

@@ -1,5 +1,4 @@
-import ShoesItem from "../../components/commons/Product";
-import giay1 from "../../assets/img/giay1.jpg";
+import React from "react";
 
 function Home() {
   return <h1>Trang chủ đây</h1>;

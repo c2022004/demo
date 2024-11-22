@@ -13,6 +13,7 @@ import SignIn from "../pages/public/SignIn";
 import OnlyContentLayout from "../components/layouts/OnlyContentLayout";
 import DefaultLayout from "../components/layouts/DefaultLayout";
 import Login from "../pages/public/Login";
+import Comment from "../pages/user/Comment";
 
 // Cấu hình routes theo role và layout
 const publicConfig = [

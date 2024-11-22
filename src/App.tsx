@@ -1,8 +1,8 @@
+import React, { ComponentType } from "react";
 import { LayoutRouteProps, Navigate, Route, Routes } from "react-router-dom";
 import { adminConfig, userConfig, publicConfig } from "./routes/routes";
 import NotFound from "./routes/NotFound";
 import DefaultLayout from "./components/layouts/DefaultLayout";
-import { ComponentType } from "react";
 
 // Định nghĩa interface RouteConfig
 export interface RouteConfig {
