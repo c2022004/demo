@@ -1,9 +1,15 @@
 import React, { useState } from 'react';
 import NavigationMenu from '../commons/NavigationMenu';
-import Image from '../commons/Image';
 import SearchBar from '../commons/SearchBar';
+import Image from '../commons/Image';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBell, faCommentDots, faBagShopping, faTable, faUser } from '@fortawesome/free-solid-svg-icons';
+import {
+  faBell,
+  faCommentDots,
+  faBagShopping,
+  faTable,
+  faUser,
+} from '@fortawesome/free-solid-svg-icons';
 import { productCategories } from '../commons/categoriesProduct';
 import { userCategories } from '../commons/categoriesUser';
 
@@ -12,7 +18,7 @@ const Header: React.FC = () => {
   const [isAccountMenuOpen, setIsAccountMenuOpen] = useState(false);
 
   return (
-    <header className="bg-white shadow-md py-2">
+    <header className="bg-yellow-400 shadow-md py-2">
       <div className="container mx-auto flex items-center justify-between px-4">
         {/* Logo */}
         <div className="flex items-center space-x-4">
@@ -22,13 +28,13 @@ const Header: React.FC = () => {
         {/* Navigation Menu */}
         <div className="relative">
           <button
-            className="flex items-center font-bold text-blue-500"
+            className="flex items-center font-bold text-blue-800"
             onClick={() => setIsCategoryMenuOpen(!isCategoryMenuOpen)}
           >
             Danh mục
           </button>
           {isCategoryMenuOpen && (
-            <div className="absolute top-full left-0 bg-white shadow-md mt-2 w-48">
+            <div className="absolute top-full left-0 bg-white shadow-md mt-2 w-72 rounded-md">
               <NavigationMenu categories={productCategories} />
             </div>
           )}
@@ -67,14 +73,15 @@ const Header: React.FC = () => {
 
           <button
             className="p-2 bg-gray-100 rounded-full hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            aria-label="Quản lý"
+            aria-label="Quản lý tin"
           >
             <FontAwesomeIcon icon={faTable} className="w-5 h-5 text-gray-700" />
           </button>
         </div>
 
         {/* Account Menu and Post Button */}
-        <div className="relative flex items-center space-x-4">
+        <div className="flex items-center space-x-4">
+          {/* Account Menu */}
           <div className="relative">
             <button
               className="flex items-center px-4 py-2 border rounded-md hover:bg-gray-100"
@@ -84,21 +91,55 @@ const Header: React.FC = () => {
               <span className="ml-2 text-gray-700">Tài khoản</span>
             </button>
             {isAccountMenuOpen && (
-              <div className="absolute top-full right-0 bg-white shadow-md mt-2 w-48">
-                <ul>
-                  {userCategories.map((item) => (
-                    <li
-                      key={item.name}
-                      className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
-                    >
-                      <a href={item.href}>{item.name}</a>
-                    </li>
-                  ))}
-                </ul>
+              <div className="absolute top-full right-0 bg-white shadow-md mt-2 w-72 rounded-md overflow-hidden z-50">
+                {/* Đăng nhập / Đăng ký */}
+                <div className="flex items-center px-4 py-4">
+                  <div className="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center">
+                    <FontAwesomeIcon icon={faUser} className="w-6 h-6 text-gray-500" />
+                  </div>
+                  <div className="ml-3">
+                    <p className="text-gray-700 font-bold">Đăng nhập / Đăng ký</p>
+                  </div>
+                </div>
+                <hr className="border-gray-200" />
+                {/* Các nhóm menu */}
+                {userCategories.map((section) => (
+                  <div key={section.section} className="mb-4">
+                    {/* Tiêu đề nhóm */}
+                    <div className="px-4 py-2 bg-gray-100 font-bold text-gray-700">
+                      {section.section}
+                    </div>
+                    {/* Các mục trong nhóm */}
+                    <ul>
+                      {section.items.map((item) => (
+                        <li
+                          key={item.name}
+                          className="flex items-center px-4 py-2 hover:bg-gray-100 cursor-pointer"
+                        >
+                          {/* Icon */}
+                          <div className="w-6 h-6 mr-3 text-blue-500">
+                            <FontAwesomeIcon icon={item.icon} />
+                          </div>
+                          {/* Tên mục */}
+                          <a href={item.href} className="flex-1 text-gray-700">
+                            {item.name}
+                          </a>
+                          {/* Tag nếu có */}
+                          {item.tag && (
+                            <span className="text-xs bg-yellow-300 text-yellow-900 px-2 py-1 rounded">
+                              {item.tag}
+                            </span>
+                          )}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                ))}
               </div>
             )}
           </div>
 
+          {/* Post Button */}
           <button className="ml-4 bg-orange-500 text-white px-4 py-2 rounded hover:bg-orange-600">
             ĐĂNG TIN
           </button>
