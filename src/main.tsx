@@ -1,4 +1,4 @@
-import { StrictMode } from "react";
+/*import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./index.css";
@@ -21,4 +21,30 @@ createRoot(document.getElementById("root")!).render(
       </Routes>
     </BrowserRouter>
   </StrictMode>
+);*/
+
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import App from './App'; // Gọi `App` từ file `App.tsx`
+import './index.css'; // Nếu bạn đang sử dụng Tailwind hoặc CSS khác
+
+ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>
 );
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

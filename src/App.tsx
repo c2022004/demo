@@ -1,4 +1,4 @@
-import { Link, Outlet } from "react-router-dom";
+/*import { Link, Outlet } from "react-router-dom";
 import Login from "./pages/LoginPage";
 function Header() {
   const page = [
@@ -16,4 +16,20 @@ function Header() {
   );
 }
 
-export default Header;
+export default Header;*/
+
+import React from 'react';
+import Header from './components/layouts/Header'; // Đường dẫn đến file `Header`
+
+const App: React.FC = () => {
+  return (
+    <div>
+      <Header />
+    </div>
+  );
+};
+
+export default App;
+
+
+

@@ -1,3 +1,4 @@
+import React from 'react';
 import { useState, forwardRef } from "react";
 
 interface ImageProps extends React.ImgHTMLAttributes<HTMLImageElement> {
