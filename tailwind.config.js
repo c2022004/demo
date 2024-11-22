@@ -10,6 +10,9 @@ export default {
       colors: {
         primary: "var(--primary)",
       },
+      width: {
+        default: "960px",
+      },
     },
   },
   plugins: [
