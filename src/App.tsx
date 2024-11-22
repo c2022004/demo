@@ -7,7 +7,7 @@ import { ComponentType } from "react";
 // Định nghĩa interface RouteConfig
 export interface RouteConfig {
   path: string;
-  component: ComponentType<any>;
+  component: () => JSX.Element;
   layout?: ComponentType<LayoutRouteProps> | React.FC<any>;
   isPrivate?: boolean;
 }

@@ -7,23 +7,28 @@ interface ImageProps extends React.ImgHTMLAttributes<HTMLImageElement> {
   fallBack?: string;
   imgSmall?: boolean;
   classes?: string;
+  imgCart?: boolean;
 }
 
 const Image = forwardRef<HTMLImageElement, ImageProps>(
-  ({ src, alt, imgSmall, classes, ...props }, ref) => {
+  ({ src, alt, imgSmall, imgCart, classes, ...props }, ref) => {
     const [fallBack, setFallBack] = useState("");
 
     const handleError = () => {
       setFallBack(defaultImage);
     };
 
-    classes = " overflow-hidden object-cover";
+    classes += " overflow-hidden object-cover";
     if (imgSmall) {
       classes += " w-22";
     }
+
+    if (imgCart) {
+      classes += " w-";
+    }
     return (
       <img
-        className={classes}
+        className=" w-24 "
         ref={ref}
         src={src || fallBack}
         alt={alt}
