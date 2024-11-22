@@ -1,3 +1,4 @@
+import React from 'react';
 import { useState, forwardRef } from "react";
 import defaultImage from "../../assets/img/defaultImage.jpg";
 
