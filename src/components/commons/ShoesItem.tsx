@@ -10,7 +10,7 @@ interface ProdcutPtops {
   small?: boolean;
   medium?: boolean;
   large?: boolean;
-  onclick?: (e) => void;
+  onclick?: () => void;
 }
 function ShoesItem({
   title,
