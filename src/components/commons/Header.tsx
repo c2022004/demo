@@ -1,24 +1,24 @@
-import React, { useState } from 'react';
-import NavigationMenu from '../commons/NavigationMenu';
-import SearchBar from '../commons/SearchBar';
-import Image from '../commons/Image';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import React, { useState } from "react";
+import NavigationMenu from "../commons/NavigationMenu";
+import SearchBar from "../commons/SearchBar";
+import Image from "../commons/Image";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faBell,
   faCommentDots,
   faBagShopping,
   faTable,
   faUser,
-} from '@fortawesome/free-solid-svg-icons';
-import { productCategories } from '../commons/categoriesProduct';
-import { userCategories } from '../commons/categoriesUser';
+} from "@fortawesome/free-solid-svg-icons";
+import { productCategories } from "../commons/categoriesProduct";
+import { userCategories } from "../commons/categoriesUser";
 
 const Header: React.FC = () => {
   const [isCategoryMenuOpen, setIsCategoryMenuOpen] = useState(false);
   const [isAccountMenuOpen, setIsAccountMenuOpen] = useState(false);
 
   return (
-<header className="bg-white shadow-md py-2">
+    <header className="bg-white shadow-md py-2">
       <div className="container mx-auto flex items-center justify-between px-4">
         {/* Logo */}
         <div className="flex items-center space-x-4">
@@ -44,7 +44,7 @@ const Header: React.FC = () => {
         <div className="flex-1 mx-4">
           <SearchBar
             placeholder="Tìm kiếm sản phẩm"
-            onSearch={(query) => console.log('Từ khóa tìm kiếm:', query)}
+            onSearch={(query) => console.log("Từ khóa tìm kiếm:", query)}
           />
         </div>
 
@@ -61,14 +61,20 @@ const Header: React.FC = () => {
             className="p-2 bg-gray-100 rounded-full hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-400"
             aria-label="Tin nhắn"
           >
-            <FontAwesomeIcon icon={faCommentDots} className="w-5 h-5 text-gray-500" />
+            <FontAwesomeIcon
+              icon={faCommentDots}
+              className="w-5 h-5 text-gray-500"
+            />
           </button>
 
           <button
             className="p-2 bg-gray-100 rounded-full hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-400"
             aria-label="Giỏ hàng"
           >
-            <FontAwesomeIcon icon={faBagShopping} className="w-5 h-5 text-gray-500" />
+            <FontAwesomeIcon
+              icon={faBagShopping}
+              className="w-5 h-5 text-gray-500"
+            />
           </button>
 
           <button
@@ -87,7 +93,10 @@ const Header: React.FC = () => {
               className="flex items-center px-4 py-2 border border-gray-300 rounded-md hover:bg-gray-100"
               onClick={() => setIsAccountMenuOpen(!isAccountMenuOpen)}
             >
-              <FontAwesomeIcon icon={faUser} className="w-5 h-5 text-gray-700" />
+              <FontAwesomeIcon
+                icon={faUser}
+                className="w-5 h-5 text-gray-700"
+              />
               <span className="ml-2 text-gray-700">Tài khoản</span>
             </button>
             {isAccountMenuOpen && (
@@ -95,10 +104,15 @@ const Header: React.FC = () => {
                 {/* Đăng nhập / Đăng ký */}
                 <div className="flex items-center px-4 py-4">
                   <div className="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center">
-                    <FontAwesomeIcon icon={faUser} className="w-6 h-6 text-gray-500" />
+                    <FontAwesomeIcon
+                      icon={faUser}
+                      className="w-6 h-6 text-gray-500"
+                    />
                   </div>
                   <div className="ml-3">
-                    <p className="text-gray-700 font-bold">Đăng nhập / Đăng ký</p>
+                    <p className="text-gray-700 font-bold">
+                      Đăng nhập / Đăng ký
+                    </p>
                   </div>
                 </div>
                 <hr className="border-gray-200" />
@@ -145,10 +159,7 @@ const Header: React.FC = () => {
           </button>
         </div>
       </div>
-    </header>   
-
-
+    </header>
   );
 };
-
 export default Header;
