@@ -53,14 +53,14 @@ spring:
       maximum-pool-size: ${DATASOURCE.MAXIMUM_POOL_SIZE:50}
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
-#    show-sql: ${JPA.SHOW_SQL:true}
-#    properties:
-#      hibernate:
-#        format_sql: ${FORMAT_SQL:true}
-#        use_nationalized_character_data: ${USE_NATIONALIZED_CHARACTER_DATA:true}
-#        enable_lazy_load_no_trans: ${LAZY_LOAD:true}
-#    hibernate:
-#      ddl-auto: update
+  #    show-sql: ${JPA.SHOW_SQL:true}
+  #    properties:
+  #      hibernate:
+  #        format_sql: ${FORMAT_SQL:true}
+  #        use_nationalized_character_data: ${USE_NATIONALIZED_CHARACTER_DATA:true}
+  #        enable_lazy_load_no_trans: ${LAZY_LOAD:true}
+  #    hibernate:
+  #      ddl-auto: update
   flyway:
     enabled: true
     locations: classpath:db/migration
@@ -74,8 +74,8 @@ spring:
 
 logging:
   level:
-#    root: TRACE
-#    org.springframework.web: DEBUG
+    #    root: TRACE
+    #    org.springframework.web: DEBUG
     org.hibernate.SQL: DEBUG
     org.springframework.web.filter.CommonsRequestLoggingFilter: DEBUG
 #  pattern:

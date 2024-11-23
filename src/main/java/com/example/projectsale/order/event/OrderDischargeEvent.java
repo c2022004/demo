@@ -14,4 +14,8 @@ public class OrderDischargeEvent extends ApplicationEvent {
         super(source);
         this.orderId = orderId;
     }
+
+    public String getOrderId() {
+        return orderId;
+    }
 }

@@ -13,6 +13,7 @@ public class OrderServiceHandle {
     @Async("asyncTaskExecutor")
     @EventListener
     public void handle(OrderDischargeEvent event) {
+
         log.info("Handle event order: {}", event.getOrderId());
     }
 }
