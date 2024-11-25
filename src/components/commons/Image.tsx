@@ -1,7 +1,6 @@
-import React from 'react';
+import React from "react";
 import { useState, forwardRef } from "react";
 import defaultImage from "../../assets/img/defaultImage.jpg";
-
 interface ImageProps extends React.ImgHTMLAttributes<HTMLImageElement> {
   src?: string;
   alt?: string;
@@ -9,10 +8,11 @@ interface ImageProps extends React.ImgHTMLAttributes<HTMLImageElement> {
   imgSmall?: boolean;
   classes?: string;
   imgCart?: boolean;
+  imgString?: string;
 }
 
 const Image = forwardRef<HTMLImageElement, ImageProps>(
-  ({ src, alt, imgSmall, imgCart, classes, ...props }, ref) => {
+  ({ src, alt, imgSmall, imgCart, imgString, classes, ...props }, ref) => {
     const [fallBack, setFallBack] = useState("");
 
     const handleError = () => {
@@ -31,7 +31,7 @@ const Image = forwardRef<HTMLImageElement, ImageProps>(
       <img
         className=" w-24 "
         ref={ref}
-        src={src || fallBack}
+        src={imgString ? `/src/assets/img/` + imgString : src}
         alt={alt}
         {...props}
         onError={handleError}

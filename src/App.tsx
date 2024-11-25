@@ -32,7 +32,7 @@ function App() {
               </Layout>
             ) : (
               // Redirect hoặc render trang login
-              <Navigate to="/login" replace />
+              <Navigate to="/dang-nhap" replace />
             )
           ) : (
             <Layout>

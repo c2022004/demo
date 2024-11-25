@@ -14,6 +14,7 @@ import OnlyContentLayout from "../components/layouts/OnlyContentLayout";
 import DefaultLayout from "../components/layouts/DefaultLayout";
 import Login from "../pages/public/Login";
 import Comment from "../pages/user/Comment";
+import Cart from "../pages/user/Cart";
 
 // Cấu hình routes theo role và layout
 const publicConfig = [
@@ -52,7 +53,7 @@ const userConfig = [
   },
   {
     path: userRoutes.addToCart,
-    component: addToCart,
+    component: Cart,
     layout: DefaultLayout,
     isPrivate: true,
   },

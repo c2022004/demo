@@ -12,6 +12,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { productCategories } from "../commons/categoriesProduct";
 import { userCategories } from "../commons/categoriesUser";
+import Button from "./Button";
 
 const Header: React.FC = () => {
   const [isCategoryMenuOpen, setIsCategoryMenuOpen] = useState(false);
@@ -111,7 +112,7 @@ const Header: React.FC = () => {
                   </div>
                   <div className="ml-3">
                     <p className="text-gray-700 font-bold">
-                      Đăng nhập / Đăng ký
+                      <Button className="bg-transparent hover:bg-transparent text-black" to="/dang-nhap" >Đăng nhập</Button> / <Button className="bg-transparent hover:bg-transparent text-black" to="/dang-ky">Đăng ký</Button>
                     </p>
                   </div>
                 </div>

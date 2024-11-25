@@ -7,10 +7,11 @@ interface TextField {
   type?: string;
   label?: string;
   tabIndex?: number;
+  placeholder?: string;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-function TextField({ type, label, onChange, tabIndex }: TextField) {
+function TextField({ type, label,placeholder, onChange, tabIndex }: TextField) {
   return (
     <div className="p-2">
       <label
@@ -26,7 +27,7 @@ function TextField({ type, label, onChange, tabIndex }: TextField) {
           name="price"
           type={type}
           onChange={onChange}
-          placeholder="Username"
+          placeholder={placeholder}
           className="block w-full rounded-md border-0 py-1.5 pl-7 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-yellow-200 sm:text-sm/6"
         />
       </div>
