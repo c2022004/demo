@@ -30,7 +30,6 @@ public class CategoryController {
 
     private final CategoryService categoryService;
 
-    @PreAuthorize("")
     @PostMapping
     public ResponseEntity<Response> createCategory(@RequestBody CategoryCreateRequest request) {
         return categoryService.createCategory(request);

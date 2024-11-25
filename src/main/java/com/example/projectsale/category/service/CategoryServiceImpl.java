@@ -59,6 +59,7 @@ public class CategoryServiceImpl extends AbsServiceUtil implements CategoryServi
 
             return responseUtil.responseSuccess("CM_002", categoryDtoMapper.apply(category));
         } catch (Exception e) {
+            e.printStackTrace();
             log.error(e.getMessage());
             throw new ApiRequestException("CM_001");
         }

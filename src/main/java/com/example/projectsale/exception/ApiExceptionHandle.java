@@ -223,6 +223,7 @@ public class ApiExceptionHandle extends AbsServiceUtil {
                 .message(internalServerError.getReasonPhrase())
                 .build();
 
+        e.printStackTrace();
         log.error("Request failed: URI={}, Method={}, Error={}", uri, method, e.getMessage());
         return new ResponseEntity<>(serverResponse, internalServerError);
     }
