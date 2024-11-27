@@ -1,7 +1,7 @@
 import React from "react";
 
 function addCategory() {
-  return <></>;
+  return <>thêm loại sản phẩm</>;
 }
 
 export default addCategory;

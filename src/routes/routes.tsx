@@ -15,9 +15,11 @@ import DefaultLayout from "../components/layouts/DefaultLayout";
 import Login from "../pages/public/Login";
 import Comment from "../pages/user/Comment";
 import Cart from "../pages/user/Cart";
+import ProductDetail from "../pages/public/ProductDetail";
+import { RouteConfig } from "../App";
 
 // Cấu hình routes theo role và layout
-const publicConfig = [
+const publicConfig : RouteConfig[]= [
   {
     path: publicRoutes.home,
     component: Home,
@@ -36,9 +38,15 @@ const publicConfig = [
     layout: OnlyContentLayout,
     isPrivate: false,
   },
+  {
+    path: publicRoutes.productDetail, 
+    component: ProductDetail , 
+    layout: DefaultLayout , 
+    isPrivate: false
+  }
 ];
 
-const userConfig = [
+const userConfig : RouteConfig[]= [
   {
     path: userRoutes.home,
     component: Home,
@@ -69,6 +77,7 @@ const userConfig = [
     layout: DefaultLayout,
     isPrivate: true,
   },
+
 ];
 
 const adminConfig = [

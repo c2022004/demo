@@ -62,13 +62,14 @@ function Login() {
       
       if (response.data.data.accessToken) {
         localStorage.setItem("auth_token", response.data.data.accessToken);
+        localStorage.setItem("auth_role", response.data.data.role);
         console.log("Đăng nhập thành công");
         navigate("/")
       } else {
         console.log("Đăng nhập thất bại");
       }
     } catch (error: unknown) {
-      
+
       console.error(error);
     }
   };
@@ -100,22 +101,22 @@ function Login() {
           placeholder="Password"
         />
         <div className="p-2">
-          <Button outline large primary onClick={handleLogin}>
+          <Button outline large primary className=" bg-transparent hover:bg-yellow-100 active:border-indigo-400" onClick={handleLogin}>
             Đăng nhập
           </Button>
         </div>
         <div className="pr-2 flex flex-row-reverse" >
-          <Link to="/dang-ky" className="text-black hover:text-yellow-100">Đăng ký</Link>
+          <Link to="/dang-ky" className="text-black hover:text-yellow-400">Đăng ký</Link>
         </div>
         <div className="flex gap-2 p-2 ">
           {logo.map((item, index) => (
             <Button
               key={index}
-              className="flex bg-white "
+              className="flex bg-transparent hover:bg-transparent hover:border-double hover:scale-110"
               lefticon={<Image sizes="small" src={item.src} alt={item.name} />}
               children={item.name}
+              outline
               flex={true}
-              onClick={handleLogin}
             ></Button>
           ))}
         </div>

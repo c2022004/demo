@@ -74,14 +74,14 @@ function SignIn() {
           <img src="" alt="" />
         </div>
         <div className="font-bold text-4xl text-left p-2">Đăng ký</div>
-        <TextField onChange={handleUsename} type="text" label="Username" />
-        <TextField onChange={handleEmail} type="email" label="Email" />
-        <TextField onChange={handlePassword} type="password" label="Password" />
-        <TextField
+        <TextField name="email" id="email" onChange={handleEmail} type="email" label="Email" />
+        <TextField name="password" id="password" onChange={handlePassword} type="password" label="Password" />
+        <TextField name="confirmPassword" id="confirmPassword"
           onChange={handleConfirmPassword}
           type="password"
           label="Confirm password"
         />
+        <TextField name="birthDate" id="birthDate" onChange={handleUsename} type="localDate" label="Ngày sinh" />
         <div className="p-2">
           <Button onClick={handleLogin} outline large primary>
             Đăng ký
@@ -91,7 +91,7 @@ function SignIn() {
           {logo.map((item, index) => (
             <Button
               key={index}
-              className="flex bg-white  "
+              className="flex bg-transparent"
               lefticon={<Image sizes="small" src={item.src} alt={item.name} />}
               small={true}
               flex={true}

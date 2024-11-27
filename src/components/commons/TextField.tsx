@@ -2,7 +2,8 @@ import { ChangeEvent } from "react";
 
 import React from "react";
 interface TextField {
-  username?: string;
+  name?: string;
+  id?:string
   currency?: string;
   type?: string;
   label?: string;
@@ -11,20 +12,20 @@ interface TextField {
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-function TextField({ type, label,placeholder, onChange, tabIndex }: TextField) {
+function TextField({name,id, type, label,placeholder, onChange, tabIndex }: TextField) {
   return (
     <div className="p-2">
-      <label
-        htmlFor="price"
+      <label htmlFor={id}
         className="block text-sm/6 font-medium text-gray-900"
       >
         {label}
       </label>
       <div className="relative mt-2 rounded-md shadow-sm">
         <input
+        
           tabIndex={tabIndex}
-          id="price"
-          name="price"
+          id={id}
+          name={name}
           type={type}
           onChange={onChange}
           placeholder={placeholder}

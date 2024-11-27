@@ -13,10 +13,17 @@ import {
 import { productCategories } from "../commons/categoriesProduct";
 import { userCategories } from "../commons/categoriesUser";
 import Button from "./Button";
+import { useNavigate } from "react-router-dom";
 
 const Header: React.FC = () => {
   const [isCategoryMenuOpen, setIsCategoryMenuOpen] = useState(false);
   const [isAccountMenuOpen, setIsAccountMenuOpen] = useState(false);
+const navigate = useNavigate()
+
+  const handleCart = ()=>{
+navigate("gio-hang")
+  }
+
 
   return (
     <header className="bg-white shadow-md py-2">
@@ -43,7 +50,7 @@ const Header: React.FC = () => {
 
         {/* Search Bar */}
         <div className="flex-1 mx-4">
-          <SearchBar
+          <SearchBar 
             placeholder="Tìm kiếm sản phẩm"
             onSearch={(query) => console.log("Từ khóa tìm kiếm:", query)}
           />
@@ -74,6 +81,7 @@ const Header: React.FC = () => {
           >
             <FontAwesomeIcon
               icon={faBagShopping}
+              onClick={handleCart}
               className="w-5 h-5 text-gray-500"
             />
           </button>
