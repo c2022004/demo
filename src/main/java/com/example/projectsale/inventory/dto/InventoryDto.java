@@ -1,9 +1,7 @@
 package com.example.projectsale.inventory.dto;
 
 import com.example.projectsale.enums.StatusInventory;
-import com.example.projectsale.product.entity.Product;
-import com.example.projectsale.supplier.entity.Supplier;
-import jakarta.persistence.*;
+import com.example.projectsale.product.dto.ProductDto;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Positive;
@@ -43,4 +41,6 @@ public class InventoryDto {
 
     @NotBlank
     private String size;
+
+    private ProductDto product;
 }

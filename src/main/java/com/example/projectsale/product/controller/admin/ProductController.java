@@ -20,7 +20,7 @@ public class ProductController {
     private final ProductService productService;
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<Response> saveProduct(@RequestBody ProductDto request) {
+    public ResponseEntity<Response> saveProduct(ProductDto request) {
         productService.saveProduct(request);
         return ResponseEntity.ok().build();
     }

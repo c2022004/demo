@@ -62,7 +62,7 @@ spring:
   #    hibernate:
   #      ddl-auto: update
   flyway:
-    enabled: true
+    enabled: false
     locations: classpath:db/migration
     baselineOnMigrate: ${FLYWAY.BASE_LINE_ON_MIGRATE:true}
     baselineVersion: ${FLYWAY.BASE_LINE_VERSION:0}

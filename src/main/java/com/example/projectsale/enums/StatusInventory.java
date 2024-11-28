@@ -14,6 +14,7 @@ public enum StatusInventory {
     DAMAGED,
     PENDING_INSPECTION,
     DISCONTINUED,
-    PRE_ORDER
+    PRE_ORDER,
+    NEW
 
 }

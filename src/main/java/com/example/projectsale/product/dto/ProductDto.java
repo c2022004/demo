@@ -21,6 +21,8 @@ import java.util.UUID;
 @SuperBuilder(toBuilder = true)
 public class ProductDto {
 
+    private UUID id;
+
     private UUID categoryId;
 
     @NotBlank

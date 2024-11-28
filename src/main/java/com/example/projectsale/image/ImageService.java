@@ -74,7 +74,12 @@ public class ImageService {
     }
 
     private boolean isValidImageExtension(String extension) {
-        return extension.equalsIgnoreCase(".png") || extension.equalsIgnoreCase(".img");
+        return extension.equalsIgnoreCase(".png")
+                || extension.equalsIgnoreCase(".img")
+                || extension.equalsIgnoreCase(".jpg")
+                || extension.equalsIgnoreCase(".jpeg")
+                || extension.equalsIgnoreCase(".gif")
+                || extension.equalsIgnoreCase(".bmp");
     }
 
     public byte[] loadImage(String filename) {
