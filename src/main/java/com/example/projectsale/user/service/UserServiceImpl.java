@@ -53,11 +53,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
@@ -142,9 +138,11 @@ public class UserServiceImpl extends AbsServiceUtil implements UserService {
         var jwtToken = jwtService.generateToken(user);
         revokeAllUserTokens(user);
         saveUserToken(user, jwtToken);
+        Set<UserRole> role = user.getUserRoles();
+        UserRole roleOne = role.iterator().next();
 
         UserLoginDtoResponse response = new UserLoginDtoResponse(jwtToken, jwtService.generateRefreshToken(user),
-                TimeUnit.MICROSECONDS.toSeconds(jwtService.extractExpired(jwtToken).getTime()));
+                TimeUnit.MICROSECONDS.toSeconds(jwtService.extractExpired(jwtToken).getTime()),roleOne.getRoleName());
 
         return responseUtil.responseSuccess("USR_002", response);
     }
