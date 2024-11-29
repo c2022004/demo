@@ -11,7 +11,7 @@ import java.util.UUID;
 
 public interface ProductService {
 
-    ResponseEntity<Response> saveProduct(@RequestBody ProductDto productDto);
+    Product saveProduct(@RequestBody ProductDto productDto);
 
     ResponseEntity<Response> updateProduct(ProductDto productDto, UUID id);
 

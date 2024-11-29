@@ -17,7 +17,9 @@ import java.util.UUID;
 public interface InventoryRepo extends AbstractRepository<Inventory, UUID> {
     boolean existsById(UUID id);
 
-    boolean existsBySizeAndProduct_Id(String size, UUID productId);
+    boolean existsBySizeAndColorAndProductName(String size,
+                                                      String productColor,
+                                                      String productName);
 
     @Query("""
             select
@@ -38,11 +40,11 @@ public interface InventoryRepo extends AbstractRepository<Inventory, UUID> {
                 AND (c.status = 'ACTIVE' OR c.status = 'NO_ACTIVE')
                 OR ((:#{#request.minPrice} IS NULL OR p.price BETWEEN :#{#request.minPrice}
                 AND :#{#request.maxPrice})
-                AND (:#{#request.color} IS NULL OR p.color = :#{#request.color})
+                AND (:#{#request.color} IS NULL OR i.color = :#{#request.color})
                 AND (:#{#request.name} IS NULL OR p.name = :#{#request.name})
                 AND (:#{#request.categories} IS NULL OR p.category = :#{#request.categories})
                 AND (:#{#request.size} IS NULL OR i.size = :#{#request.size})
-                AND (:#{#request.statusInventory} IS NULL 
+                AND (:#{#request.statusInventory} IS NULL
                     OR i.statusInventory = :#{#request.statusInventory})
             )
             """)

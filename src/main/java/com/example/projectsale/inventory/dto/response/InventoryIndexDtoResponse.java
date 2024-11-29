@@ -29,4 +29,6 @@ public class InventoryIndexDtoResponse {
 
     private String size;
 
+    private String color;
+
 }

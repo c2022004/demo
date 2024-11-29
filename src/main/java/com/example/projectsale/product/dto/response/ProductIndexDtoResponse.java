@@ -20,8 +20,6 @@ public class ProductIndexDtoResponse {
 
     private BigDecimal price;
 
-    private String color;
-
     private String shortDescription;
 
     private String longDescription;

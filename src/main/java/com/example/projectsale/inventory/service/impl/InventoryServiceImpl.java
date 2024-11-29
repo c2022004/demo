@@ -13,6 +13,7 @@ import com.example.projectsale.inventory.service.InventoryService;
 import com.example.projectsale.product.dto.ProductDto;
 import com.example.projectsale.product.entity.Product;
 import com.example.projectsale.product.repo.ProductRepo;
+import com.example.projectsale.product.service.ProductService;
 import com.example.projectsale.supplier.entity.Supplier;
 import com.example.projectsale.supplier.repo.SupplierRepo;
 import com.example.projectsale.utils.AbsServiceUtil;
@@ -39,23 +40,30 @@ public class InventoryServiceImpl extends AbsServiceUtil implements InventorySer
     private final ResponseUtil responseUtil;
     private final SupplierRepo supplierRepo;
     private final InventoryDtoMapper inventoryDtoMapper;
+    private final ProductService productService;
 
 
     @Override
     public ResponseEntity<Response> createInventory(InventoryDto inventoryDto) {
-        if (inventoryRepo.existsBySizeAndProduct_Id(inventoryDto.getSize(),
-                inventoryDto.getProductId()))
+        if (inventoryRepo.existsBySizeAndColorAndProductName(inventoryDto.getSize(),
+                inventoryDto.getColor(), inventoryDto.getName()))
         {
             throw new RuntimeException("Product exists");
         } else if (inventoryRepo.existsById(inventoryDto.getSupplierId())) {
             throw new RuntimeException("Supplier exists");
         }
 
-        Product product = productRepo.findById(inventoryDto.getProductId())
-                .orElseThrow(() -> new RuntimeException("Product not found"));
-
         Supplier supplier = supplierRepo.findById(inventoryDto.getSupplierId())
                 .orElseThrow(() -> new RuntimeException("Supplier not found"));
+
+        Product product = productService.saveProduct(ProductDto.builder()
+                        .name(inventoryDto.getName())
+                        .categoryId(inventoryDto.getCategoryId())
+                        .price(inventoryDto.getPrice())
+                        .shortDescription(inventoryDto.getShortDescription())
+                        .shortDescription(inventoryDto.getShortDescription())
+                        .images(inventoryDto.getImages())
+                        .build());
 
         Inventory inventory = inventoryRepo.save(
                 Inventory.builder()
@@ -65,6 +73,7 @@ public class InventoryServiceImpl extends AbsServiceUtil implements InventorySer
                         .maximumInStock(inventoryDto.getMaximumInStock())
                         .minimumInStock(inventoryDto.getMinimumInStock())
                         .statusInventory(inventoryDto.getStatusInventory())
+                        .color(inventoryDto.getColor())
                         .lastRestockDate(new Date())
                         .supplier(supplier)
                         .status(SystemEnumStatus.ACTIVE)
@@ -79,10 +88,10 @@ public class InventoryServiceImpl extends AbsServiceUtil implements InventorySer
     @Override
     public ResponseEntity<Response> updateInventory(InventoryDto inventoryDto,
                                                     UUID id) {
-        if (!inventoryRepo.existsBySizeAndProduct_Id(inventoryDto.getSize(),
-                inventoryDto.getProductId()))
+        if (inventoryRepo.existsBySizeAndColorAndProductName(inventoryDto.getSize(),
+                inventoryDto.getColor(), inventoryDto.getName()))
         {
-            throw new RuntimeException("Product not exists");
+            throw new RuntimeException("Product exists");
         }
 
         Supplier supplier = supplierRepo.findById(inventoryDto.getSupplierId())
@@ -96,8 +105,8 @@ public class InventoryServiceImpl extends AbsServiceUtil implements InventorySer
         inventory.setStatusInventory(inventoryDto.getStatusInventory());
         inventory.setLastRestockDate(new Date(System.currentTimeMillis()));
         inventory.setSize(inventoryDto.getSize());
+        inventory.setColor(inventoryDto.getColor());
         inventory.setSupplier(supplier);
-
 
         return null;
     }

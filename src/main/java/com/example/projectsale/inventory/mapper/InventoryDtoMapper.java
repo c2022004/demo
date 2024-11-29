@@ -24,7 +24,12 @@ public class InventoryDtoMapper implements Function<Inventory, InventoryDto> {
                 .quantityInStock(inventory.getQuantityInStock())
                 .minimumInStock(inventory.getMinimumInStock())
                 .maximumInStock(inventory.getMaximumInStock())
-                .product(ProductDto.builder().id(product.getId()).name(product.getName()).build())
+                .color(inventory.getColor())
+                .statusInventory(inventory.getStatusInventory())
+                .name(product.getName())
+                .price(product.getPrice())
+                .longDescription(product.getLongDescription())
+                .shortDescription(product.getShortDescription())
                 .build();
     }
 
@@ -34,6 +39,8 @@ public class InventoryDtoMapper implements Function<Inventory, InventoryDto> {
                 .quantityInStock(inventory.getQuantityInStock())
                 .maximumInStock(inventory.getMaximumInStock())
                 .minimumInStock(inventory.getMinimumInStock())
+                .color(inventory.getColor())
+                .size(inventory.getSize())
                 .statusInventory(StatusInventory.NEW)
                 .lastRestockDate(inventory.getLastRestockDate())
                 .build();

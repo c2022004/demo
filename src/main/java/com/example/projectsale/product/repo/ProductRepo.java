@@ -37,7 +37,6 @@ public interface ProductRepo extends JpaRepository<Product, UUID> {
                 AND c.status = 'ACTIVE'
                 OR ((:#{#request.minPrice} IS NULL OR p.price BETWEEN :#{#request.minPrice}
                 AND :#{#request.maxPrice})
-                AND (:#{#request.color} IS NULL OR p.color = :#{#request.color})
                 AND (:#{#request.name} IS NULL OR p.name = :#{#request.name})
                 AND (:#{#request.categories} IS NULL OR p.category = :#{#request.categories})
                 AND (:#{#request.size} IS NULL OR i.size = :#{#request.size})

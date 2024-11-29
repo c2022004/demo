@@ -69,7 +69,7 @@ public class JpaConfig {
         props.put("hibernate.format_sql", true);
         props.put("hibernate.use_nationalized_character_data", true);
         props.put("hibernate.enable_lazy_load_no_trans", false);
-        props.put("hibernate.hbm2ddl.auto", "none");
+        props.put("hibernate.hbm2ddl.auto", "update");
         return props;
     }
 

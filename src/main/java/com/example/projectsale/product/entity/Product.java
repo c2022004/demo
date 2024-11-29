@@ -35,8 +35,6 @@ public class Product extends BaseEntityUtil {
     @Column(name = "price")
     private BigDecimal price;
 
-    @Column(name = "color")
-    private String color;
 
     @Column(name = "short_description")
     private String shortDescription;

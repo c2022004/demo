@@ -32,9 +32,6 @@ public class ProductDto {
     @Positive
     private BigDecimal price;
 
-    @NotBlank
-    private String color;
-
     private String shortDescription;
 
     private String longDescription;

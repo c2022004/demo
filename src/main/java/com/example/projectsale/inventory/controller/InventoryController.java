@@ -7,6 +7,7 @@ import com.example.projectsale.inventory.dto.request.InventorySearchDtoRequest;
 import com.example.projectsale.inventory.service.InventoryService;
 import com.example.projectsale.utils.response.Response;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,8 +25,8 @@ public class InventoryController {
         return inventoryService.getAllInventory(request);
     }
 
-    @PostMapping
-    public ResponseEntity<Response> createInventory(@RequestBody InventoryDto inventoryDto) {
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<Response> createInventory(InventoryDto inventoryDto) {
         inventoryService.createInventory(inventoryDto);
         return ResponseEntity.ok().build();
     }

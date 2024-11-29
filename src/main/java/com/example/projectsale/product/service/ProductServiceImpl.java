@@ -43,7 +43,7 @@ public class ProductServiceImpl extends AbsServiceUtil implements ProductService
     private final ProductDtoMapper productDtoMapper;
 
     @Override
-    public ResponseEntity<Response> saveProduct(ProductDto request) {
+    public Product saveProduct(ProductDto request) {
         if (productRepo.existsByName(request.getName())) {
             throw new RuntimeException("Product exists");
         }
@@ -55,7 +55,6 @@ public class ProductServiceImpl extends AbsServiceUtil implements ProductService
                 Product.builder()
                         .name(request.getName())
                         .price(request.getPrice())
-                        .color(request.getColor())
                         .isDeleted(SystemConstant.IS_DELETED_ACTIVE)
                         .status(SystemEnumStatus.ACTIVE)
                         .shortDescription(request.getShortDescription())
@@ -68,7 +67,7 @@ public class ProductServiceImpl extends AbsServiceUtil implements ProductService
             imageProductService.createImageProduct(product, request.getImages());
         }
 
-        return responseUtil.responseSuccess("PD_001", null);
+        return product;
     }
 
     @Override
@@ -80,7 +79,6 @@ public class ProductServiceImpl extends AbsServiceUtil implements ProductService
                 .orElseThrow(() -> new RuntimeException("Product not found"));
         product.setName(productDto.getName());
         product.setPrice(productDto.getPrice());
-        product.setColor(productDto.getColor());
         product.setShortDescription(productDto.getShortDescription());
         product.setLongDescription(productDto.getLongDescription());
 

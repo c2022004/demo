@@ -54,6 +54,9 @@ public class Inventory extends BaseEntityUtil {
     @Enumerated(EnumType.STRING)
     private StatusInventory statusInventory;
 
+    @Column(name = "color")
+    private String color;
+
     @Column(name = "size")
     private String size;
 }
