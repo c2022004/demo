@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import NavigationMenu from "../commons/NavigationMenu";
-import SearchBar from "../commons/SearchBar";
-import Image from "../commons/Image";
+import NavigationMenu from "../NavigationMenu";
+import SearchBar from "../SearchBar";
+import Image from "../Image";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faBell,
@@ -10,12 +10,12 @@ import {
   faTable,
   faUser,
 } from "@fortawesome/free-solid-svg-icons";
-import { productCategories } from "../commons/categoriesProduct";
-import { userCategories } from "../commons/categoriesUser";
-import Button from "./Button";
+import { userCategories } from "../categoriesUser";
+import Button from "../Button";
 import { useNavigate } from "react-router-dom";
+import { adminNavigation } from '../../../assets/data/AdminNavigation';
 
-const Header: React.FC = () => {
+const AdminHeader: React.FC = () => {
   const [isCategoryMenuOpen, setIsCategoryMenuOpen] = useState(false);
   const [isAccountMenuOpen, setIsAccountMenuOpen] = useState(false);
 const navigate = useNavigate()
@@ -26,7 +26,7 @@ navigate("gio-hang")
 
 
   return (
-    <header className="bg-white shadow-md py-2">
+    <header className="bg-white shadow-md py-2 fixed z-20 w-full">
       <div className="container mx-auto flex items-center justify-between px-4">
         {/* Logo */}
         <div className="flex items-center space-x-4">
@@ -43,7 +43,7 @@ navigate("gio-hang")
           </button>
           {isCategoryMenuOpen && (
             <div className="absolute top-full left-0 bg-white shadow-md mt-2 w-72 rounded-md">
-              <NavigationMenu categories={productCategories} />
+              <NavigationMenu categories={adminNavigation} />
             </div>
           )}
         </div>
@@ -171,4 +171,4 @@ navigate("gio-hang")
     </header>
   );
 };
-export default Header;
+export default AdminHeader;
