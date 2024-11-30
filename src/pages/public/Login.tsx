@@ -67,10 +67,10 @@ function Login() {
 
         if(response.data.data.role ==="ADMIN"){
           navigate("/admin")
-          window.location.reload
+          window.location.href
         }else if(response.data.data.role === "SUPPER_ADMIN"){
           navigate("/")
-          window.location.reload
+          window.location.href
         }
       } else {
         console.log("Đăng nhập thất bại");
