@@ -16,6 +16,9 @@ function SignIn() {
   const [email, setEmail] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
+  //check data 
+  // const [isEmail, setIsEmail] 
+
   const logo: Logo[] = [
     {
       name: "Facebook",
@@ -45,6 +48,9 @@ function SignIn() {
 
   //gửi api
   const handleLogin = async () => {
+
+
+
     try {
       const response = await axios.post(api, {
         username,
@@ -81,7 +87,7 @@ function SignIn() {
           type="password"
           label="Confirm password"
         />
-        <TextField name="birthDate" id="birthDate" onChange={handleUsename} type="localDate" label="Ngày sinh" />
+        <TextField name="birthDate" id="birthDate" onChange={handleUsename} type="date" label="Ngày sinh" className="pr-2" />
         <div className="p-2">
           <Button onClick={handleLogin} outline large primary>
             Đăng ký

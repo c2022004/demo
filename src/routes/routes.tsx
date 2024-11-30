@@ -1,10 +1,7 @@
 import adminRoutes from "../config/adminRoutes";
 import userRoutes from "../config/userRoutes";
 import Home from "../pages/public/Home";
-import addToCart from "../pages/user/AddToCart";
 import Checkout from "../pages/user/Checkout";
-import Profile from "../pages/user/Profile";
-import addCategory from "../pages/admin/AddCategory";
 import AddProduct from "../pages/admin/AddProduct";
 import DisableUser from "../pages/admin/DisableUser";
 import ReportUser from "../pages/admin/ReportUser";
@@ -17,6 +14,11 @@ import Comment from "../pages/user/Comment";
 import Cart from "../pages/user/Cart";
 import ProductDetail from "../pages/public/ProductDetail";
 import { RouteConfig } from "../App";
+import File from "../components/commons/File";
+import Profile from "../pages/user/Profile";
+import AddCategory from "../pages/admin/AddCategory";
+import LayoutAdmin from "../components/layouts/LayoutAdmin";
+import AdminHome from "../components/commons/admin/AdminHome";
 
 // Cấu hình routes theo role và layout
 const publicConfig : RouteConfig[]= [
@@ -41,6 +43,12 @@ const publicConfig : RouteConfig[]= [
   {
     path: publicRoutes.productDetail, 
     component: ProductDetail , 
+    layout: DefaultLayout , 
+    isPrivate: false
+  },
+  {
+    path: publicRoutes.importFile, 
+    component: File ,
     layout: DefaultLayout , 
     isPrivate: false
   }
@@ -82,27 +90,33 @@ const userConfig : RouteConfig[]= [
 
 const adminConfig = [
   {
+    path:adminRoutes.adminHome, 
+    component: AdminHome,
+    layout:LayoutAdmin, 
+    isPrivate: true,
+  },
+  {
     path: adminRoutes.addCategory,
-    component: addCategory,
-    layout: DefaultLayout,
+    component: AddCategory,
+    layout: LayoutAdmin,
     isPrivate: true,
   },
   {
     path: adminRoutes.addProduct,
     component: AddProduct,
-    layout: DefaultLayout,
+    layout: LayoutAdmin,
     isPrivate: true,
   },
   {
     path: adminRoutes.disableUser,
     component: DisableUser,
-    layout: DefaultLayout,
+    layout: LayoutAdmin,
     isPrivate: true,
   },
   {
     path: adminRoutes.reportUser,
     component: ReportUser,
-    layout: DefaultLayout,
+    layout: LayoutAdmin,
     isPrivate: true,
   },
 ];

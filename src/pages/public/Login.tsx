@@ -64,7 +64,14 @@ function Login() {
         localStorage.setItem("auth_token", response.data.data.accessToken);
         localStorage.setItem("auth_role", response.data.data.role);
         console.log("Đăng nhập thành công");
-        navigate("/")
+
+        if(response.data.data.role ==="ADMIN"){
+          navigate("/admin")
+          window.location.reload
+        }else if(response.data.data.role === "SUPPER_ADMIN"){
+          navigate("/")
+          window.location.reload
+        }
       } else {
         console.log("Đăng nhập thất bại");
       }

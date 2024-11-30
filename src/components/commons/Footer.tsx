@@ -1,7 +1,7 @@
 import React from "react";
 
 function Footer() {
-  return <div className="w-screen bg-yellow-50 h-96">footer</div>;
+  return <footer className="w-screen bg-yellow-50 h-96 mt-10">footer</footer>;
 }
 
 export default Footer;

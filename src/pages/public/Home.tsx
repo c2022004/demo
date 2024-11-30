@@ -2,52 +2,38 @@ import React, { useEffect, useState } from "react";
 import ShoesItem from './../../components/commons/ShoesItem';
 import Image from './../../components/commons/Image';
 import ListProduct from "../../components/commons/ListProduct";
+import { findAllProduct } from "../../apis/productAPI";
 
-interface Product {
+// Định nghĩa ImageData với thuộc tính urlImage
+export interface ImageData {
+  urlImage: string;
+}
+
+export interface Product {
   id: string;
-  title: string;
-  image: string;
+  images: ImageData[]; // Sử dụng mảng ImageData thay vì string[]
+  name: string;
+  price: number;
+  shortDescription: string;
+  longDescription: string;
 }
 
 function Home() {
-
-  
   const [product, setProduct] = useState<Product[]>([])
 
-  const listProduct: Product[] = [
-    {
-      id: "ksjflw",
-      title: "giầy da",
-      image: "https://tse4.mm.bing.net/th?id=OIP.S5JMx5xm1EZtsIXm9_XfxQHaHa&pid=Api&P=0&h=180",
-    },
-    {
-      id: "ksjfkjlw",
-      title: "giầy da",
-      image: "https://tse4.mm.bing.net/th?id=OIP.S5JMx5xm1EZtsIXm9_XfxQHaHa&pid=Api&P=0&h=180",
-    },
-    {
-      id: "ksjfeulw",
-      title: "giầy da",
-      image: "https://tse4.mm.bing.net/th?id=OIP.S5JMx5xm1EZtsIXm9_XfxQHaHa&pid=Api&P=0&h=180",
-    },
-    {
-      id: "ksjfldfw",
-      title: "giầy da",
-      image: "https://tse4.mm.bing.net/th?id=OIP.S5JMx5xm1EZtsIXm9_XfxQHaHa&pid=Api&P=0&h=180",
-    },
-    {
-      id: "ks2345jflw",
-      title: "giầy da",
-      image: "https://tse4.mm.bing.net/th?id=OIP.S5JMx5xm1EZtsIXm9_XfxQHaHa&pid=Api&P=0&h=180",
-    }
-  ]
-
   useEffect(() => {
-    setProduct(listProduct)
+
+    const fetchAllProduct = async () => {
+      const response = await findAllProduct()
+      console.log(response.data);
+      setProduct(response.data)
+      console.log("Product : ", product);
+    }
+    fetchAllProduct()
   }, [])
 
   return <>
-  <ListProduct products={listProduct}/>
+    <ListProduct products={product} />
   </>
 }
 

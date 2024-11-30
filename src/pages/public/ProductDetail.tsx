@@ -13,13 +13,23 @@ interface ProductDetail {
   branch: string;
   quantity: number;
 }
+interface ProductItem {
+  id: string;
+  img: string;
+  name: string;
+  price: number;
+  color: string;
+  size: number;
+  branch: string;
+  quantity: number;
+}
 
 function ProductDetail() {
   const product: ProductDetail = {
-    id: 'hkjdsfka',
+    id: 'hkjđásdfsdsfka',
     img: 'https://tse4.mm.bing.net/th?id=OIP.S5JMx5xm1EZtsIXm9_XfxQHaHa&pid=Api&P=0&h=180',
     price: 50000,
-    name: 'cang',
+    name: 'giầy nike ',
     color: ['xanh lá', 'xanh dương', 'vàng'],
     size: [43, 42, 41, 40],
     branch: 'adidas',
@@ -45,13 +55,36 @@ function ProductDetail() {
 
   const handleAddToCart = (id: string | null) => {
     // Lấy danh sách sản phẩm từ localStorage (nếu có)
-    const existingCartItems = JSON.parse(localStorage.getItem('cartItems') || '[]');
-
-    // Lấy thông tin
-    console.log(`Tên: ${product.name}, Thương hiệu: ${product.branch}`);
-    console.log(`Màu: ${color}, Kích cỡ: ${size}`);
-    console.log(`Hình ảnh: ${product.img}`);
-
+    const items: ProductItem[] = JSON.parse(localStorage.getItem('cartItems') || '[]');
+  
+    const existingItemIndex = items.findIndex(
+      (existingItem) => 
+        existingItem.id === product.id && 
+        existingItem.color === color && 
+        existingItem.size === size
+    );
+  
+    if (existingItemIndex > -1) {
+      // Nếu sản phẩm đã tồn tại, tăng số lượng
+      items[existingItemIndex].quantity += 1;
+    } else {
+      // Nếu chưa tồn tại, thêm mới
+      const newItem: ProductItem = {
+        id: product.id, 
+        name: product.name,
+        price: product.price, 
+        branch: product.branch, 
+        img: product.img,
+        quantity: 1,
+        color: color, 
+        size: size
+      };
+      items.push(newItem);
+    }
+  
+    // Lưu lại vào localStorage
+    localStorage.setItem('cartItems', JSON.stringify(items));
+  
     alert('Đã thêm sản phẩm vào giỏ hàng');
   };
 
@@ -61,7 +94,7 @@ function ProductDetail() {
   };
 
   return (
-    <div className="flex text-lg justify-between items-center">
+    <div className="flex text-lg justify-between">
       <div className="w-1/3 pr-4">
         <div className="w-full h-2/3">
           <Image classes="w-full h-full rounded-lg object-cover" src={product.img} />
@@ -115,21 +148,22 @@ function ProductDetail() {
           </div>
         </div>
         <div className="flex justify-between items-center mt-4">
+         
           <Button
-            className=" bg-blue-300 focus:outline-none hover:bg-blue-400"
-            onClick={() => handleAddToCart(productId)}
-          >
-            Thêm vào sản phẩm
-          </Button>
-          <Button
-            className=" bg-red-300 focus:outline-none hover:bg-red-400"
+            className=" bg-red-300 focus:outline-none hover:bg-red-400 w-2/3"
             onClick={handleCheckoutNow}
           >
             Mua ngay
           </Button>
+          <Button
+            className=" bg-blue-300 focus:outline-none hover:bg-blue-400 w-1/3"
+            onClick={() => handleAddToCart(productId)}
+          >
+            Thêm vào sản phẩm
+          </Button>
         </div>
       </div>
-      <div className="w-1/3 pr-4">
+      <div className="w-1/3 pr-4 ">
         <Image src={product.img} />
       </div>
     </div>

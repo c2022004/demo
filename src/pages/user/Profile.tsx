@@ -4,7 +4,7 @@ interface Props {
 }
 
 function Profile({ title = "Default Title" }: Props) {
-  return <>{title}</>;
+  return <>trang cá nhân</>;
 }
 
 export default Profile;

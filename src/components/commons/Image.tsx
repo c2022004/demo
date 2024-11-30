@@ -29,9 +29,9 @@ const Image = forwardRef<HTMLImageElement, ImageProps>(
     }
     return (
       <img
-        className={classes || " w-24 bg-none"}
+        className={classes + " w-24 bg-none"}
         ref={ref}
-        src={imgString ? `/src/assets/img/` + imgString : src}
+        src={src ?  src : fallBack}
         alt={alt}
         {...props}
         onError={handleError}
