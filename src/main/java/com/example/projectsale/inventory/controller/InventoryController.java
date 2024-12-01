@@ -2,7 +2,7 @@ package com.example.projectsale.inventory.controller;
 
 import com.example.projectsale.constant.SystemConstant;
 import com.example.projectsale.inventory.constant.InventoryConstant;
-import com.example.projectsale.inventory.dto.InventoryDto;
+import com.example.projectsale.inventory.dto.request.InventoryDtoRequest;
 import com.example.projectsale.inventory.dto.request.InventorySearchDtoRequest;
 import com.example.projectsale.inventory.service.InventoryService;
 import com.example.projectsale.utils.response.Response;
@@ -26,20 +26,17 @@ public class InventoryController {
     }
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<Response> createInventory(InventoryDto inventoryDto) {
-        inventoryService.createInventory(inventoryDto);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<Response> createInventory(InventoryDtoRequest request) {
+        return inventoryService.createInventory(request);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Response> updateInventory(@PathVariable UUID id, InventoryDto inventoryDto) {
-        inventoryService.updateInventory(inventoryDto, id);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<Response> updateInventory(@PathVariable UUID id, InventoryDtoRequest request) {
+        return inventoryService.updateInventory(request, id);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Response> deleteInventory(@PathVariable UUID id) {
-        inventoryService.deleteInventory(id);
-        return ResponseEntity.ok().build();
+        return inventoryService.deleteInventory(id);
     }
 }

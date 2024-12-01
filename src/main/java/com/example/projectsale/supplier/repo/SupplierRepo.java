@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 public interface SupplierRepo extends AbstractRepository<Supplier, UUID> {
@@ -29,5 +30,15 @@ public interface SupplierRepo extends AbstractRepository<Supplier, UUID> {
             """)
     Page<Supplier> findByCondition(@Param("key") String key, @Param("isDeleted") Boolean isDeleted, Pageable pageable);
 
-
+    @Query("""
+            SELECT
+                s
+            FROM
+                Supplier s
+            INNER JOIN
+                Inventory iv ON iv.supplier.id = s.id
+            WHERE
+                iv.product.id = :productId
+            """)
+    Optional<Supplier> findSupplierByProductId(UUID productId);
 }

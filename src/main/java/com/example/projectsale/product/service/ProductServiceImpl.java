@@ -7,10 +7,12 @@ import com.example.projectsale.enums.SystemEnumStatus;
 import com.example.projectsale.imageproduct.service.ImageProductService;
 import com.example.projectsale.product.dto.ProductDto;
 import com.example.projectsale.product.dto.request.ProductSearchDtoRequest;
+import com.example.projectsale.product.dto.response.ProductDetailDtoResponse;
 import com.example.projectsale.product.dto.response.ProductIndexDtoResponse;
 import com.example.projectsale.product.entity.Product;
 import com.example.projectsale.product.mapper.ProductDtoMapper;
 import com.example.projectsale.product.repo.ProductRepo;
+import com.example.projectsale.supplier.repo.SupplierRepo;
 import com.example.projectsale.utils.AbsServiceUtil;
 import com.example.projectsale.utils.PageableUtil;
 import com.example.projectsale.utils.response.Response;
@@ -40,7 +42,10 @@ public class ProductServiceImpl extends AbsServiceUtil implements ProductService
     private final ImageProductService imageProductService;
 
     private final ResponseUtil responseUtil;
+
     private final ProductDtoMapper productDtoMapper;
+
+    private final SupplierRepo supplierRepo;
 
     @Override
     public Product saveProduct(ProductDto request) {
@@ -114,5 +119,16 @@ public class ProductServiceImpl extends AbsServiceUtil implements ProductService
                 .toList();
 
         return responseUtil.responseSuccess("PD_002", list);
+    }
+
+    @Override
+    public ResponseEntity<Response> findProducts(ProductSearchDtoRequest request) {
+        Pageable pageable = PageableUtil.of(request.getCurrentPage(), request.getLimitPage());
+        Page<Product> all = productRepo.findAllBy(request, pageable);
+        List<ProductDetailDtoResponse> list = all.stream()
+                .map(productDtoMapper::toProductDetailResponse)
+                .toList();
+
+        return responseUtil.responsesSuccess("PD_002", list, pageable(pageable, all.getTotalPages()));
     }
 }

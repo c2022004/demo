@@ -20,4 +20,6 @@ public interface ProductService {
     ResponseEntity<Response> getProduct(UUID id);
 
     ResponseEntity<Response> findAllProducts(ProductSearchDtoRequest request);
+
+    ResponseEntity<Response> findProducts(ProductSearchDtoRequest request);
 }

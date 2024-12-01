@@ -3,7 +3,7 @@ package com.example.projectsale.inventory.service.impl;
 import com.example.projectsale.constant.SystemConstant;
 import com.example.projectsale.enums.StatusInventory;
 import com.example.projectsale.enums.SystemEnumStatus;
-import com.example.projectsale.inventory.dto.InventoryDto;
+import com.example.projectsale.inventory.dto.request.InventoryDtoRequest;
 import com.example.projectsale.inventory.dto.request.InventorySearchDtoRequest;
 import com.example.projectsale.inventory.dto.response.InventoryIndexDtoResponse;
 import com.example.projectsale.inventory.entity.Inventory;
@@ -26,7 +26,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -44,36 +43,35 @@ public class InventoryServiceImpl extends AbsServiceUtil implements InventorySer
 
 
     @Override
-    public ResponseEntity<Response> createInventory(InventoryDto inventoryDto) {
-        if (inventoryRepo.existsBySizeAndColorAndProductName(inventoryDto.getSize(),
-                inventoryDto.getColor(), inventoryDto.getName()))
-        {
+    public ResponseEntity<Response> createInventory(InventoryDtoRequest request) {
+        if (inventoryRepo.existsBySizeAndColorAndProductName(request.getSize(),
+                request.getColor(), request.getName())) {
             throw new RuntimeException("Product exists");
-        } else if (inventoryRepo.existsById(inventoryDto.getSupplierId())) {
+        } else if (inventoryRepo.existsById(request.getSupplierId())) {
             throw new RuntimeException("Supplier exists");
         }
 
-        Supplier supplier = supplierRepo.findById(inventoryDto.getSupplierId())
+        Supplier supplier = supplierRepo.findById(request.getSupplierId())
                 .orElseThrow(() -> new RuntimeException("Supplier not found"));
 
         Product product = productService.saveProduct(ProductDto.builder()
-                        .name(inventoryDto.getName())
-                        .categoryId(inventoryDto.getCategoryId())
-                        .price(inventoryDto.getPrice())
-                        .shortDescription(inventoryDto.getShortDescription())
-                        .shortDescription(inventoryDto.getShortDescription())
-                        .images(inventoryDto.getImages())
-                        .build());
+                .name(request.getName())
+                .categoryId(request.getCategoryId())
+                .price(request.getPrice())
+                .shortDescription(request.getShortDescription())
+                .shortDescription(request.getShortDescription())
+                .images(request.getImages())
+                .build());
 
         Inventory inventory = inventoryRepo.save(
                 Inventory.builder()
                         .product(product)
-                        .size(inventoryDto.getSize())
-                        .quantityInStock(inventoryDto.getQuantityInStock())
-                        .maximumInStock(inventoryDto.getMaximumInStock())
-                        .minimumInStock(inventoryDto.getMinimumInStock())
-                        .statusInventory(inventoryDto.getStatusInventory())
-                        .color(inventoryDto.getColor())
+                        .size(request.getSize())
+                        .quantityInStock(request.getQuantityInStock())
+                        .maximumInStock(request.getMaximumInStock())
+                        .minimumInStock(request.getMinimumInStock())
+                        .statusInventory(request.getStatusInventory())
+                        .color(request.getColor())
                         .lastRestockDate(new Date())
                         .supplier(supplier)
                         .status(SystemEnumStatus.ACTIVE)
@@ -82,37 +80,35 @@ public class InventoryServiceImpl extends AbsServiceUtil implements InventorySer
                         .build()
         );
 
-        return responseUtil.responseSuccess("IV_001",null);
+        return responseUtil.responseSuccess("IV_001", inventoryDtoMapper.apply(inventory));
     }
 
     @Override
-    public ResponseEntity<Response> updateInventory(InventoryDto inventoryDto,
-                                                    UUID id) {
-        if (inventoryRepo.existsBySizeAndColorAndProductName(inventoryDto.getSize(),
-                inventoryDto.getColor(), inventoryDto.getName()))
-        {
+    public ResponseEntity<Response> updateInventory(InventoryDtoRequest request, UUID id) {
+        if (inventoryRepo.existsBySizeAndColorAndProductName(request.getSize(),
+                request.getColor(), request.getName())) {
             throw new RuntimeException("Product exists");
         }
 
-        Supplier supplier = supplierRepo.findById(inventoryDto.getSupplierId())
+        Supplier supplier = supplierRepo.findById(request.getSupplierId())
                 .orElseThrow(() -> new RuntimeException("Supplier not found"));
 
         Inventory inventory = inventoryRepo.findById(id)
                 .orElseThrow(() -> new RuntimeException("Product not found"));
-        inventory.setQuantityInStock(inventoryDto.getQuantityInStock());
-        inventory.setMaximumInStock(inventoryDto.getMaximumInStock());
-        inventory.setMinimumInStock(inventoryDto.getMinimumInStock());
-        inventory.setStatusInventory(inventoryDto.getStatusInventory());
+        inventory.setQuantityInStock(inventory.getQuantityInStock() + request.getQuantityInStock());
+        inventory.setMaximumInStock(request.getMaximumInStock());
+        inventory.setMinimumInStock(request.getMinimumInStock());
+        inventory.setStatusInventory(request.getStatusInventory());
         inventory.setLastRestockDate(new Date(System.currentTimeMillis()));
-        inventory.setSize(inventoryDto.getSize());
-        inventory.setColor(inventoryDto.getColor());
+        inventory.setSize(request.getSize());
+        inventory.setColor(request.getColor());
         inventory.setSupplier(supplier);
 
-        return null;
+        return responseUtil.responseSuccess("IV_003", inventoryDtoMapper.apply(inventory));
     }
 
     @Override
-    public void deleteInventory(UUID id) {
+    public ResponseEntity<Response> deleteInventory(UUID id) {
         Product product = productRepo.findById(id)
                 .orElseThrow(() -> new RuntimeException("Product not found"));
         product.setIsDeleted(SystemConstant.IS_DELETED_NO_ACTIVE);
@@ -124,6 +120,8 @@ public class InventoryServiceImpl extends AbsServiceUtil implements InventorySer
         inventory.setStatusInventory(StatusInventory.DISCONTINUED);
         inventory.setIsDeleted(SystemConstant.IS_DELETED_NO_ACTIVE);
         productRepo.save(product);
+
+        return responseUtil.responseSuccess("IV_004", inventory.getId());
     }
 
 
@@ -134,7 +132,7 @@ public class InventoryServiceImpl extends AbsServiceUtil implements InventorySer
         List<InventoryIndexDtoResponse> list = all.stream()
                 .map(inventoryDtoMapper::toInventoryIndexDtoResponse)
                 .toList();
-        return responseUtil.responseSuccess("List Inventory", list);
+        return responseUtil.responsesSuccess("IV_002", list, pageable(pageable, all.getTotalPages()));
     }
 
 }

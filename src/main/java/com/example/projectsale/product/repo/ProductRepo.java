@@ -40,6 +40,7 @@ public interface ProductRepo extends JpaRepository<Product, UUID> {
                 AND (:#{#request.name} IS NULL OR p.name = :#{#request.name})
                 AND (:#{#request.categories} IS NULL OR p.category = :#{#request.categories})
                 AND (:#{#request.size} IS NULL OR i.size = :#{#request.size})
+                AND (:#{#request.color} IS NULL OR i.color = :#{#request.color})
             )
             """)
     Page<Product> findAllBy(@Param("request") ProductSearchDtoRequest request, Pageable pageable);

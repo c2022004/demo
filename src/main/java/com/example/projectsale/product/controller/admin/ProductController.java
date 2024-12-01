@@ -3,6 +3,7 @@ package com.example.projectsale.product.controller.admin;
 import com.example.projectsale.constant.SystemConstant;
 import com.example.projectsale.product.constants.ProductConstant;
 import com.example.projectsale.product.dto.ProductDto;
+import com.example.projectsale.product.dto.request.ProductSearchDtoRequest;
 import com.example.projectsale.product.service.ProductService;
 import com.example.projectsale.utils.response.Response;
 import lombok.RequiredArgsConstructor;
@@ -27,15 +28,19 @@ public class ProductController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Response> updateProduct(@PathVariable("id") UUID id, @RequestBody ProductDto request) {
-        productService.updateProduct(request,id);
+        productService.updateProduct(request, id);
         return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Response> deleteProduct(@PathVariable("id") UUID id) {
-       productService.deleteProduct(id);
-       return ResponseEntity.ok().build();
+        productService.deleteProduct(id);
+        return ResponseEntity.ok().build();
     }
 
+    @GetMapping
+    public ResponseEntity<Response> getProducts(@RequestBody ProductSearchDtoRequest request) {
+        return productService.findProducts(request);
+    }
 
 }

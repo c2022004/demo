@@ -22,4 +22,6 @@ public class ProductSearchDtoRequest extends Paging {
 
     private String size;
 
+    private String color;
+
 }

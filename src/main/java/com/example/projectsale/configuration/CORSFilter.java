@@ -22,7 +22,7 @@ public class CORSFilter extends OncePerRequestFilter {
         response.addHeader("Access-Control-Expose-Headers", "xsrf-token");
         if ("OPTIONS".equals(request.getMethod())) {
             response.setStatus(HttpServletResponse.SC_OK);
-        } else { 
+        } else {
             filterChain.doFilter(request, response);
         }
     }
