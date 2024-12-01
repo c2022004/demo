@@ -28,6 +28,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -47,7 +48,9 @@ public class InventoryServiceImpl extends AbsServiceUtil implements InventorySer
         if (inventoryRepo.existsBySizeAndColorAndProductName(request.getSize(),
                 request.getColor(), request.getName())) {
             throw new RuntimeException("Product exists");
-        } else if (inventoryRepo.existsById(request.getSupplierId())) {
+        }
+
+        if (inventoryRepo.existsById(request.getSupplierId())) {
             throw new RuntimeException("Supplier exists");
         }
 
@@ -133,6 +136,17 @@ public class InventoryServiceImpl extends AbsServiceUtil implements InventorySer
                 .map(inventoryDtoMapper::toInventoryIndexDtoResponse)
                 .toList();
         return responseUtil.responsesSuccess("IV_002", list, pageable(pageable, all.getTotalPages()));
+    }
+
+    @Override
+    public void updateInventory(UUID productId, String size, String color, Integer quantity) {
+        Inventory inventory = inventoryRepo.findByInventory(productId, size, color)
+                .orElseThrow(() -> new RuntimeException("Inventory not found"));
+        if (inventory.getQuantityInStock() < quantity) {
+            throw new RuntimeException("Quantity out of stock");
+        }
+        inventory.setQuantityInStock(inventory.getQuantityInStock() - quantity);
+        inventoryRepo.save(inventory);
     }
 
 }

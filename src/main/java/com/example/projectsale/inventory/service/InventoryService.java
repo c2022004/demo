@@ -2,9 +2,11 @@ package com.example.projectsale.inventory.service;
 
 import com.example.projectsale.inventory.dto.request.InventoryDtoRequest;
 import com.example.projectsale.inventory.dto.request.InventorySearchDtoRequest;
+import com.example.projectsale.inventory.entity.Inventory;
 import com.example.projectsale.utils.response.Response;
 import org.springframework.http.ResponseEntity;
 
+import java.util.Optional;
 import java.util.UUID;
 
 public interface InventoryService {
@@ -16,4 +18,6 @@ public interface InventoryService {
     ResponseEntity<Response> deleteInventory(UUID id);
 
     ResponseEntity<Response> getAllInventory(InventorySearchDtoRequest request);
+
+    void updateInventory(UUID productId, String size, String color, Integer quantity);
 }

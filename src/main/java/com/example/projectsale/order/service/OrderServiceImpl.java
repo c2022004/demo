@@ -1,14 +1,23 @@
 package com.example.projectsale.order.service;
 
+import com.example.projectsale.inventory.dto.response.InventoryIndexDtoResponse;
+import com.example.projectsale.inventory.entity.Inventory;
 import com.example.projectsale.order.dto.OrderDto;
+import com.example.projectsale.order.dto.request.OrderSearchDtoRequest;
 import com.example.projectsale.order.entity.Order;
 import com.example.projectsale.order.event.OrderDischargeEvent;
 import com.example.projectsale.order.mapper.OrderDtoMapper;
 import com.example.projectsale.order.repo.OrderRepo;
 import com.example.projectsale.utils.AbsServiceUtil;
+import com.example.projectsale.utils.PageableUtil;
+import com.example.projectsale.utils.response.Response;
+import com.example.projectsale.utils.response.ResponseUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,37 +34,18 @@ public class OrderServiceImpl extends AbsServiceUtil implements OrderService {
     private final OrderRepo orderRepo;
     private final OrderDtoMapper orderDtoMapper;
     private final ApplicationEventPublisher applicationEventPublisher;
+    private final ResponseUtil responseUtil;
 
 
     @Override
-    public void demo(String search) {
-        log.info("========================== Demo =====================");
-        applicationEventPublisher.publishEvent(new OrderDischargeEvent(this, search));
+    public ResponseEntity<Response> getAllOrders(OrderSearchDtoRequest request) {
+        Pageable pageable = PageableUtil.of(request.getCurrentPage(), request.getLimitPage());
+        Page<Order> all = orderRepo.findAll(request, pageable);
+        List<OrderDto> list = all.stream()
+                .map(orderDtoMapper)
+                .toList();
+        return responseUtil.responsesSuccess("OR_002", list, pageable(pageable, all.getTotalPages()));
     }
-
-
-    @Override
-    public List<OrderDto> searchOrders(String search) {
-        log.info("Searching orders with keyword: {}", search);
-        List<Order> orders = orderRepo.findByEmailContainingOrFullNameContaining(search, search);
-
-        return orders.stream().map(orderDtoMapper).toList();
-    }
-
-
-    @Override
-    public OrderDto createOrder(Order order) {
-        log.info("Creating new order for user: {}", order.getUser().getEmail());
-
-        Order savedOrder = orderRepo.save(order);
-
-
-        applicationEventPublisher.publishEvent(new OrderDischargeEvent(this, savedOrder.getId().toString()));
-
-
-        return orderDtoMapper.apply(savedOrder);
-    }
-
 
     @Override
     public OrderDto updateOrder(String orderId, Order order) {

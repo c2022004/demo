@@ -49,10 +49,6 @@ public class ProductServiceImpl extends AbsServiceUtil implements ProductService
 
     @Override
     public Product saveProduct(ProductDto request) {
-        if (productRepo.existsByName(request.getName())) {
-            throw new RuntimeException("Product exists");
-        }
-
         Category category = categoryRepo.findById(request.getCategoryId())
                 .orElseThrow(() -> new RuntimeException("Category not found"));
 

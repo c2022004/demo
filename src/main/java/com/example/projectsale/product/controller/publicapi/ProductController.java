@@ -7,10 +7,7 @@ import com.example.projectsale.product.service.ProductService;
 import com.example.projectsale.utils.response.Response;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController(value = "publicProduct")
 @RequestMapping(SystemConstant.API_PUBLIC+SystemConstant.VERSION_ONE+ ProductConstant.PRODUCT_URI)
@@ -20,7 +17,7 @@ public class ProductController {
     private final ProductService productService;
 
     @GetMapping
-    public ResponseEntity<Response> findAllProducts(ProductSearchDtoRequest request) {
+    public ResponseEntity<Response> findAllProducts(@RequestBody ProductSearchDtoRequest request) {
         return productService.findAllProducts(request);
 
     }

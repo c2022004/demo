@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
 import java.util.UUID;
 
 @Repository
@@ -44,4 +45,22 @@ public interface ProductRepo extends JpaRepository<Product, UUID> {
             )
             """)
     Page<Product> findAllBy(@Param("request") ProductSearchDtoRequest request, Pageable pageable);
+
+    @Query("""
+            SELECT
+                 p
+            FROM
+                Product p
+            INNER JOIN
+                Inventory it ON it.product.id = p.id
+            INNER JOIN
+                Supplier sp ON sp.id = it.supplier.id
+            WHERE
+                 p.status = 'ACTIVE' AND p.isDeleted = false AND sp.isDeleted = false
+            AND
+                 it.quantityInStock >= :quantity
+            AND
+                 p.id = :productId
+            """)
+    Optional<Product> findByProductCondition(@Param("productId") UUID productId, @Param("quantity") Integer quantity);
 }

@@ -13,6 +13,10 @@ public class ResponseUtil extends AbsServiceUtil {
         return new ResponseEntity<>(response(code, SystemConstant.STATUS_SUCCESS, data, getMessage(code), responseTime()), status);
     }
 
+    public ResponseEntity<Response> responseSuccess(String code) {
+        return new ResponseEntity<>(response(code, SystemConstant.STATUS_SUCCESS, null, getMessage(code), responseTime()), HttpStatus.OK);
+    }
+
     public ResponseEntity<Response> responseSuccess(String code, Object data) {
         return new ResponseEntity<>(response(code, SystemConstant.STATUS_SUCCESS, data, getMessage(code), responseTime()), HttpStatus.OK);
     }

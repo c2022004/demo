@@ -11,6 +11,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
 import java.util.UUID;
 
 @Repository
@@ -49,4 +50,18 @@ public interface InventoryRepo extends AbstractRepository<Inventory, UUID> {
             )
             """)
     Page<Inventory> findAllBy(@Param("request") InventorySearchDtoRequest request, Pageable pageable);
+
+    @Query("""
+            select
+                  i
+            FROM
+                  Inventory i
+            WHERE
+                  i.status = 'ACTIVE'
+                  AND
+                  i.product.id = :productId
+                  AND i.size = :size
+                  AND i.color = :color
+            """)
+    Optional<Inventory> findByInventory(UUID productId, String size, String color);
 }

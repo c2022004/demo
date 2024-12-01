@@ -6,4 +6,6 @@ public interface EmailService {
 
     String buildMailConfirm(String urlConfirm);
 
+    void sendOrderSuccess(String to, String email, String subject, String body);
+
 }

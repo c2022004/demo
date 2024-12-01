@@ -1,14 +1,10 @@
 package com.example.projectsale.order.entity;
 
+import com.example.projectsale.enums.StatusOrder;
 import com.example.projectsale.orderdetail.entity.OrderDetail;
 import com.example.projectsale.user.entity.User;
 import com.example.projectsale.utils.base.BaseEntityUtil;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -40,6 +36,10 @@ public class Order extends BaseEntityUtil {
 
     @Column(name = "phone_number")
     private String phoneNumber;
+
+    @Column(name = "status_order")
+    @Enumerated(EnumType.STRING)
+    private StatusOrder statusOrder;
 
     @Column(name = "address")
     private String address;

@@ -29,7 +29,7 @@ public class InventoryDtoMapper implements Function<Inventory, InventoryDto> {
     public InventoryDto apply(Inventory inventory) {
         return InventoryDto.builder()
                 .size(inventory.getSize())
-                .lastRestockDate(new Date())
+                .lastRestockDate(inventory.getLastRestockDate())
                 .quantityInStock(inventory.getQuantityInStock())
                 .minimumInStock(inventory.getMinimumInStock())
                 .maximumInStock(inventory.getMaximumInStock())

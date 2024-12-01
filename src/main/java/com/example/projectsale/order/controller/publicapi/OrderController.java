@@ -19,18 +19,8 @@ public class OrderController {
 
     private final OrderService orderService;
 
-    // Endpoint tìm kiếm đơn hàng
-    @GetMapping(OrderConstant.API_ORDER_SEARCH + "/{search}")
-    public ResponseEntity<?> search(@PathVariable String search) {
-        List<OrderDto> orders = orderService.searchOrders(search);
-        return new ResponseEntity<>(orders, HttpStatus.OK);
-    }
 
-    // Endpoint tạo đơn hàng
-    @PostMapping(OrderConstant.API_ORDER_CREATE)
-    public ResponseEntity<?> createOrder(@RequestBody Order order) {
-        return new ResponseEntity<>(orderService.createOrder(order), HttpStatus.CREATED);
-    }
+
 
     // Endpoint cập nhật đơn hàng
     @PutMapping(OrderConstant.API_ORDER_UPDATE + "/{orderId}")
