@@ -4,8 +4,12 @@ import com.example.projectsale.category.entity.Category;
 import com.example.projectsale.category.repo.CategoryRepo;
 import com.example.projectsale.constant.SystemConstant;
 import com.example.projectsale.enums.SystemEnumStatus;
+import com.example.projectsale.imageproduct.dto.ImageProductDto;
 import com.example.projectsale.imageproduct.service.ImageProductService;
+import com.example.projectsale.inventory.dto.InventoryDto;
+import com.example.projectsale.inventory.dto.InventorySimpleDto;
 import com.example.projectsale.product.dto.ProductDto;
+import com.example.projectsale.product.dto.ProductSimpleDto;
 import com.example.projectsale.product.dto.request.ProductSearchDtoRequest;
 import com.example.projectsale.product.dto.response.ProductDetailDtoResponse;
 import com.example.projectsale.product.dto.response.ProductIndexDtoResponse;
@@ -27,6 +31,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -49,6 +54,7 @@ public class ProductServiceImpl extends AbsServiceUtil implements ProductService
 
     @Override
     public Product saveProduct(ProductDto request) {
+
         Category category = categoryRepo.findById(request.getCategoryId())
                 .orElseThrow(() -> new RuntimeException("Category not found"));
 
@@ -126,5 +132,33 @@ public class ProductServiceImpl extends AbsServiceUtil implements ProductService
                 .toList();
 
         return responseUtil.responsesSuccess("PD_002", list, pageable(pageable, all.getTotalPages()));
+    }
+
+    @Override
+    public ResponseEntity<Response> getProductById(UUID id) {
+        Product product = productRepo.findById(id)
+                .orElseThrow(() -> new RuntimeException("Product not found"));
+//        productDtoMapper.toProductDetailResponse(product);
+        ProductSimpleDto productSimpleDto = ProductSimpleDto.builder()
+                .name(product.getName())
+                .shortDescription(product.getShortDescription())
+                .images(product.getImageProducts().stream()
+                        .map(image -> ImageProductDto.builder()
+                                .urlImage(image.getUrlImage())
+                                .build())
+                        .collect(Collectors.toList()))
+                .build();
+
+        List<InventorySimpleDto> inventorySimpleDtos = product.getInventories().stream()
+                .map(inventory -> InventorySimpleDto.builder()
+                        .color(inventory.getColor())
+                        .size(inventory.getSize())
+                        .build())
+                .collect(Collectors.toList());
+        return responseUtil.responseSuccess("PD_004", new Object() {
+            public final ProductSimpleDto products = productSimpleDto;
+            public final List<InventorySimpleDto> inventories = inventorySimpleDtos;
+        });
+        //return responseUtil.responseSuccess("PD_004", productDtoMapper.toProductDetailResponse(product));
     }
 }

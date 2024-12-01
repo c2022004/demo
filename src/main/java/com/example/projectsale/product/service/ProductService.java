@@ -20,5 +20,7 @@ public interface ProductService {
 
     ResponseEntity<Response> findAllProducts(ProductSearchDtoRequest request);
 
+    ResponseEntity<Response> getProductById(UUID id);
+
     ResponseEntity<Response> findProducts(ProductSearchDtoRequest request);
 }
