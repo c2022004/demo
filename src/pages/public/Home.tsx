@@ -11,7 +11,7 @@ export interface ImageData {
 
 export interface Product {
   id: string;
-  images: ImageData[]; // Sử dụng mảng ImageData thay vì string[]
+  images: ImageData[]; 
   name: string;
   price: number;
   shortDescription: string;

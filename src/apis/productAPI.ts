@@ -10,3 +10,13 @@ export const findAllProduct = async () => {
         throw error;
     }
 }
+
+export const findProductById = async (id:string) => {
+    try {
+        const response = await axiosJWT.get(`${DOMAIN}/skeleton/public/v1/product/${id}`)
+        return response.data
+    } catch (error) {
+        console.error('Error fetching all activities:', error);
+        throw error;
+    }
+}

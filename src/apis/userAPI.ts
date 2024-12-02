@@ -10,8 +10,8 @@ export const addUser=async (signIn:SignIn) =>{
             password: signIn.password,
             dateOfBirth: signIn.dateOfBirth
         })
+        return response.data
     } catch (error) {
-        console.log("lỗi khi đăng ký", error);
         throw new Error
     }
 }

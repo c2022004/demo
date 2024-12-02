@@ -156,14 +156,16 @@ function SignIn() {
       }
     
       const signInData: SignIn = {
-        email,
-        password,
-        dateOfBirth,
+        email:email,
+        password:password,
+        dateOfBirth: dateOfBirth,
       };
     
       try {
-        await addUser(signInData);
-        console.log("Đăng ký thành công");
+        console.log(signInData);
+        
+        const response = await addUser(signInData);
+        console.log("kết quả đăng ký: ",response.message);
     
         // Reset form
         setEmail("");
