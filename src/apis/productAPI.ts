@@ -1,12 +1,13 @@
-import axiosJWT from "../config/axiosJWTConfig"
-import { DOMAIN } from './index';
+import axios from "axios";
 
-export const findAllProduct = async () => {
-    try {
-        const response = await axiosJWT.get(`${DOMAIN}/skeleton/public/v1/product`)
-        return response.data
-    } catch (error) {
-        console.error('Error fetching all activities:', error);
-        throw error;
-    }
-}
+const BASE_URL = "http://localhost:8088/skeleton"; // Đổi theo cấu hình backend của bạn
+
+export const fetchProducts = async () => {
+  try {
+    const response = await axios.get(`${BASE_URL}/api/v1/products`);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching products:", error);
+    throw error;
+  }
+};

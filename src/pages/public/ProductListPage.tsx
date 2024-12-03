@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { findAllProduct } from "../../apis/productAPI";
+import { fetchProducts } from "../../apis/productAPI";
 import ListProduct from "../../components/commons/ListProduct";
-import LoadingSpinner from "../../components/commons/LoadingSpinner"; // Component loading
-import ErrorAlert from "../../components/commons/ErrorAlert"; // Component lỗi
+import LoadingSpinner from "../../components/commons/LoadingSpinner";
+import ErrorAlert from "../../components/commons/ErrorAlert";
 import { featuredProducts } from "../../data/product"; // Import dữ liệu tạm
 
 export interface Product {
@@ -17,39 +17,33 @@ export interface Product {
 const ProductListPage: React.FC = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] =useState<string | null>(null);
 
   useEffect(() => {
-    const fetchProducts = async () => {
+    const fetchProductsList = async () => {
       try {
         setIsLoading(true);
-        const response = await findAllProduct();
-        const data = response || []; // Đảm bảo dữ liệu không bị null
-
-        if (data.length > 0) {
+        const data = await fetchProducts();
+        if (data && data.length > 0) {
           setProducts(data);
         } else {
-          console.warn("API không trả về dữ liệu. Hiển thị dữ liệu tạm.");
-          setProducts(featuredProducts); // Fallback dữ liệu tạm
+          setProducts(featuredProducts); // Sử dụng dữ liệu tạm
         }
       } catch (err) {
-        console.error("Lỗi khi gọi API:", err);
         setError("Không thể tải danh sách sản phẩm. Hiển thị dữ liệu tạm.");
-        setProducts(featuredProducts); // Fallback dữ liệu tạm trong trường hợp lỗi
+        setProducts(featuredProducts); // Sử dụng dữ liệu tạm
       } finally {
         setIsLoading(false);
       }
     };
 
-    fetchProducts();
+    fetchProductsList();
   }, []);
 
-  // Xử lý trạng thái tải dữ liệu
   if (isLoading) {
     return <LoadingSpinner message="Đang tải danh sách sản phẩm..." />;
   }
 
-  // Xử lý lỗi
   if (error) {
     return <ErrorAlert message={error} />;
   }

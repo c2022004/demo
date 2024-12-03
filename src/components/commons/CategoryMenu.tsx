@@ -1,38 +1,27 @@
 import React from "react";
-
-interface Category {
-  id: number;
-  name: string;
-  iconUrl: string; // Đường dẫn icon hoặc ảnh
-}
-
-const categories: Category[] = [
-  { id: 1, name: "Nike", iconUrl: "/src/assets/img/nike-icon.png" },
-  { id: 2, name: "Adidas", iconUrl: "/src/assets/img/adidas-icon.png" },
-  { id: 3, name: "Puma", iconUrl: "/src/assets/img/puma-icon.png" },
-  { id: 4, name: "Converse", iconUrl: "/src/assets/img/converse-icon.png" },
-  { id: 5, name: "New Balance", iconUrl: "/src/assets/img/new-balance-icon.png" },
-];
+import { useNavigate } from "react-router-dom";
+import { productCategories } from "../../data/categories";
 
 const CategoryMenu: React.FC = () => {
+  const navigate = useNavigate();
+
+  const handleCategoryClick = (categoryId: string) => {
+    navigate(`/danh-sach-san-pham?category=${categoryId}`);
+  };
+
   return (
-    <div className="categories-menu-section container mx-auto my-6">
-      <h3 className="text-center text-xl font-semibold mb-4">Danh Mục</h3>
-      <div className="flex justify-center gap-6 flex-wrap">
-        {categories.map((category) => (
-          <div
-            key={category.id}
-            className="flex flex-col items-center w-24 hover:scale-105 transition"
+    <div className="categories-menu container mx-auto my-8">
+      <h3 className="text-center text-2xl font-bold mb-6">Danh Mục Sản Phẩm</h3>
+      <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+        {productCategories.map((category) => (
+          <button
+            key={category.name}
+            className="flex flex-col items-center bg-gray-100 p-4 rounded-lg shadow hover:bg-gray-200 transition"
+            onClick={() => handleCategoryClick(category.name)}
           >
-            {/* Icon hoặc ảnh */}
-            <img
-              src={category.iconUrl}
-              alt={category.name}
-              className="w-16 h-16 mb-2"
-            />
-            {/* Tên danh mục */}
-            <span className="text-gray-700 text-sm font-medium">{category.name}</span>
-          </div>
+            <span className="text-3xl mb-2">{category.icon}</span>
+            <span className="font-medium">{category.name}</span>
+          </button>
         ))}
       </div>
     </div>

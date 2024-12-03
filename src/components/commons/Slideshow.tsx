@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import Image from './Image'; // Import component Image
+import React, { useState, useEffect } from "react";
+import Image from "./Image"; // Import component Image
 
 interface Slide {
   id: number;
@@ -13,7 +13,11 @@ interface SlideshowProps {
   className?: string;
 }
 
-const Slideshow: React.FC<SlideshowProps> = ({ slides, interval = 5000, className = '' }) => {
+const Slideshow: React.FC<SlideshowProps> = ({
+  slides,
+  interval = 5000,
+  className = "",
+}) => {
   const [currentSlide, setCurrentSlide] = useState(0);
 
   const goToSlide = (index: number) => {
@@ -28,12 +32,14 @@ const Slideshow: React.FC<SlideshowProps> = ({ slides, interval = 5000, classNam
   }, [interval, slides.length]);
 
   return (
-    <div className={`relative w-[936px] h-[234px] bg-gray-200 ${className} rounded-t-lg overflow-hidden`}>
+    <div
+      className={`relative w-full h-[300px] md:h-[400px] bg-gray-200 ${className} rounded-lg overflow-hidden`}
+    >
       {slides.map((slide, index) => (
         <div
           key={slide.id}
           className={`absolute w-full h-full transition-opacity duration-1000 ${
-            index === currentSlide ? 'opacity-100' : 'opacity-0'
+            index === currentSlide ? "opacity-100" : "opacity-0"
           }`}
         >
           {/* Thay thế thẻ <img> bằng <Image> */}
@@ -43,18 +49,20 @@ const Slideshow: React.FC<SlideshowProps> = ({ slides, interval = 5000, classNam
             className="w-full h-full object-cover"
           />
           <div className="absolute bottom-0 bg-black bg-opacity-50 text-white p-2">
-            {slide.title}
+            <h2 className="text-lg">{slide.title}</h2>
           </div>
         </div>
       ))}
 
       {/* Nút tròn nhỏ ở dưới */}
-      <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 flex space-x-2">
+      <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
         {slides.map((_, index) => (
           <button
             key={index}
             onClick={() => goToSlide(index)}
-            className={`w-3 h-3 rounded-full ${index === currentSlide ? 'bg-white' : 'bg-gray-400'} focus:outline-none`}
+            className={`w-3 h-3 rounded-full ${
+              index === currentSlide ? "bg-white" : "bg-gray-400"
+            } focus:outline-none`}
           />
         ))}
       </div>

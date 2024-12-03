@@ -1,77 +1,80 @@
 import React, { useEffect, useState } from "react";
 import ListProduct from "../../components/commons/ListProduct";
-import Slideshow from "../../components/commons/Slideshow";
+import { fetchProducts } from "../../apis/productAPI"; // Gọi API
+import LoadingSpinner from "../../components/commons/LoadingSpinner";
+import ErrorAlert from "../../components/commons/ErrorAlert";
 import Banner from "../../components/commons/Banner";
-import Footer from "../../components/commons/Footer";
+import Slideshow from "../../components/commons/Slideshow";
 import CategoryMenu from "../../components/commons/CategoryMenu";
-import { findAllProduct } from "../../apis/productAPI"; // Giữ nguyên API
-import { featuredProducts } from "../../data/product";
-
-export interface ImageData {
-  urlImage: string;
-}
+import { featuredProducts } from "../../data/product"; // Import dữ liệu tạm
 
 export interface Product {
   id: string;
-  images: ImageData[]; // Sử dụng mảng ImageData thay vì string[]
   name: string;
   price: number;
+  images: { urlImage: string }[];
   shortDescription: string;
   longDescription: string;
 }
 
-function Home() {
-  const [product, setProduct] = useState<Product[]>([]);
+const Home: React.FC = () => {
+  const [products, setProducts] = useState<Product[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const fetchAllProduct = async () => {
+    const fetchData = async () => {
       try {
-        const response = await findAllProduct();
-        // Nếu API trả về dữ liệu, sử dụng dữ liệu từ API
-        if (response.data && response.data.length > 0) {
-          setProduct(response.data);
+        setIsLoading(true);
+        const data = await fetchProducts();
+        if (data && data.length > 0) {
+          setProducts(data);
         } else {
-          // Nếu không có dữ liệu từ API, sử dụng dữ liệu tạm
-          console.warn("API không trả về dữ liệu, sử dụng dữ liệu tạm.");
-          setProduct(featuredProducts);
+          console.warn("API không trả về dữ liệu. Sử dụng dữ liệu tạm.");
+          setProducts(featuredProducts); // Dữ liệu tạm
         }
       } catch (error) {
-        console.error("Lỗi khi gọi API:", error);
-        // Trong trường hợp lỗi, sử dụng dữ liệu tạm
-        setProduct(featuredProducts);
+        console.error("Không thể kết nối tới API. Hiển thị dữ liệu tạm.");
+        setError("Không thể tải danh sách sản phẩm. Hiển thị dữ liệu tạm.");
+        setProducts(featuredProducts); // Sử dụng dữ liệu tạm khi lỗi
+      } finally {
+        setIsLoading(false);
       }
     };
-    fetchAllProduct();
+
+    fetchData();
   }, []);
 
-  const slides = [
-    { id: 1, imageUrl: "/src/assets/img/giay1.jpg", title: "Slide 1" },
-    { id: 2, imageUrl: "/src/assets/img/giay2.jpg", title: "Slide 2" },
-    { id: 3, imageUrl: "/src/assets/img/giay4.jpg", title: "Slide 3" },
-  ];
+  if (isLoading) {
+    return <LoadingSpinner message="Đang tải nội dung..." />;
+  }
 
   return (
-    <>
-        {/* Banner */}
-        <div className="banner-section">
-          <Banner />
-        </div>
+    <div className="container mx-auto my-8">
+      {/* Banner */}
+      <Banner />
 
-        {/* Slideshow */}
-        <div className="slideshow-section my-8">
-          <Slideshow slides={slides} />
-        </div>
+      {/* Slideshow */}
+      <Slideshow
+        slides={[
+          { id: 1, imageUrl: "/assets/slide1.jpg", title: "Giảm giá sốc!" },
+          { id: 2, imageUrl: "/assets/slide2.jpg", title: "Mua 1 tặng 1" },
+          { id: 3, imageUrl: "/assets/slide3.jpg", title: "Hàng mới về" },
+        ]}
+      />
 
-        {/* Menu Danh Mục */}
-        <CategoryMenu />
+      {/* Category Menu */}
+      <CategoryMenu />
 
-        {/* Sản phẩm nổi bật */}
-        <div className="featured-products-section container mx-auto my-12">
-          <h2 className="text-center text-2xl font-bold mb-6">Sản Phẩm Nổi Bật</h2>
-          <ListProduct products={product} />
-        </div>
-    </>
+      {/* Danh sách sản phẩm */}
+      <section className="mt-8">
+        <h1 className="text-3xl font-bold text-center mb-6">
+          Sản phẩm nổi bật
+        </h1>
+        <ListProduct products={products} />
+      </section>
+    </div>
   );
-}
+};
 
 export default Home;
