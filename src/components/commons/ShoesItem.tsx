@@ -10,7 +10,7 @@ interface ProdcutPtops {
   classesImg?: string;
   classesTitle?: string;
   classesDescription?: string;
-  small?: boolean;
+  small?: boolean;  
   medium?: boolean;
   large?: boolean;
   price?: number
