@@ -22,6 +22,7 @@ import Checkout from './pages/user/Checkout';
 import Home from './pages/public/Home';
 import ProductList from './pages/public/ProductListPage';
 import Cart from './pages/user/Cart';
+import ProductDetail from './pages/public/ProductDetail';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
@@ -31,9 +32,10 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
         <Route path="/checkout" element={<Checkout />} />
         <Route path="/List" element={<ProductList/>} />
         <Route path="/Cart" element={<Cart/>} />
+        <Route path="/Detail" element={<ProductDetail/>} />
       </Routes>
     </Router>
-  </React.StrictMode>
+  </React.StrictMode> 
 );
 
 
