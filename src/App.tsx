@@ -18,6 +18,7 @@ function App() {
   const renderRoute = (route: RouteConfig) => {
     const Layout = route.layout || DefaultLayout;
     const Component = route.component;
+console.log(role);
 
     return (
       <Route
@@ -25,8 +26,7 @@ function App() {
         path={route.path}
         element={
           route.isPrivate ? (
-            // Nếu là route private, bạn có thể thêm logic kiểm tra authentication
-            role === "ADMIN" || role === "SUPPER_ADMIN" ? (
+            role === "SUPPER_ADMIN" || role === "ADMIN" ? (
               <Layout>
                 <Component />
               </Layout>

@@ -13,7 +13,8 @@ interface SelectBoxProps {
     onBlur?: (event: React.ChangeEvent<HTMLSelectElement>) => void;
     disableDefaultOption?: boolean;
     label?: string;
-    loading?: boolean
+    loading?: boolean;
+    onChangeString?: (e:string) => void ;
 }
 
 export default function SelectBox({
@@ -29,7 +30,8 @@ export default function SelectBox({
     label,
     onBlur,
     onChange,
-    loading = false
+    loading = false,
+    onChangeString
 }: SelectBoxProps) {
     const [selectedValue, setSelectedValue] = useState<string | number | boolean>(defaultValue);
 
@@ -54,7 +56,8 @@ export default function SelectBox({
                     `flex-none border appearance-auto border-gray-300 text-[#808EA1] hover:border-[#434343] transition duration-300 text-sm rounded-lg block p-2.5 px-4 shadow-md ${centerText ? 'text-center' : ''} ${disable ? 'bg-[#e7e9eb] cursor-not-allowed' : ''} focus:outline-none focus:ring-0 ${customClassName} ${label ? 'pt-5' : ''}`
                 }
                 value={String(selectedValue)}
-                onChange={handleChange}
+                onChange={handleChange || onChangeString}
+                
                 disabled={disable}
                 onBlur={onBlur}
             >

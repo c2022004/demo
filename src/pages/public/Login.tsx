@@ -5,6 +5,7 @@ import TextField from "../../components/commons/TextField";
 import Button from "../../components/commons/Button";
 import Image from "../../components/commons/Image";
 import { Link, useNavigate } from "react-router-dom";
+import { toast, Toaster } from "sonner";
 
 interface Logo {
   name: string;
@@ -67,17 +68,17 @@ function Login() {
 
         if(response.data.data.role ==="ADMIN"){
           navigate("/admin")
-          window.location.reload
+          window.location.href
         }else if(response.data.data.role === "SUPPER_ADMIN"){
           navigate("/")
-          window.location.reload
+          window.location.href
         }
       } else {
         console.log("Đăng nhập thất bại");
       }
+      toast.success("Đăng nhập thành công")
     } catch (error: unknown) {
-
-      console.error(error);
+        toast.error("Lỗi khi đăng nhập")
     }
   };
 
@@ -127,6 +128,7 @@ function Login() {
             ></Button>
           ))}
         </div>
+        <Toaster position="top-right"/>
       </div>
     </div>
   );

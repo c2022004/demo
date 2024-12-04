@@ -10,9 +10,9 @@ import { featuredProducts } from "../../data/product"; // Import dữ liệu t�
 
 export interface Product {
   id: string;
+  images: ImageData[]; 
   name: string;
   price: number;
-  images: { urlImage: string }[];
   shortDescription: string;
   longDescription: string;
 }

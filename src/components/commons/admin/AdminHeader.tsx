@@ -23,10 +23,8 @@ const navigate = useNavigate()
   const handleCart = ()=>{
 navigate("gio-hang")
   }
-
-
   return (
-    <header className="bg-white shadow-md py-2 fixed z-20 w-full">
+    <header className="bg-white shadow-md py-2 fixed z-20 w-full top-0">
       <div className="container mx-auto flex items-center justify-between px-4">
         {/* Logo */}
         <div className="flex items-center space-x-4">

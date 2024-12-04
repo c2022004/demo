@@ -8,7 +8,7 @@ import useFormatCurrency from "../../hooks/useFormatCurrency";
 interface CartItemProps {
   item: {
     id: string;
-    img: string;
+    img: { urlImage: string }[]; 
     name: string;
     price: number;
     color: string[];
@@ -38,8 +38,12 @@ const CartItem: React.FC<CartItemProps> = ({
     <tr>
       <td className="py-3">
         <div className="flex justify-center items-center">
-          <input className="mr-4 top-0" onClick={() =>onChecked(item.id)} type="checkbox" />
-          <Image imgString={item.img} />
+          <input className="mr-4 top-0" onClick={() => onChecked(item.id)} type="checkbox" />
+          <div className="">
+            {item.img?.[0] && (
+              <Image imgString={item.img[0]} />
+            )}
+          </div>
         </div>
       </td>
       <td className="py-3">

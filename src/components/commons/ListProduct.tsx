@@ -11,6 +11,7 @@ export default function ListProduct({ products }: ListProductProps) {
   const gridColumns = Math.min(4, products.length);
   const navigate = useNavigate();
 
+
   const handleItemDetail = (id: string) => {
     navigate(`/chi-tiet-san-pham?id=${id}`);
   };
@@ -21,10 +22,9 @@ export default function ListProduct({ products }: ListProductProps) {
   };
 
   return (
-    <div className={`grid grid-cols-${gridColumns} gap-4`}>
-      {products.map((item) => {
+    <div className={`grid grid-cols-${gridColumns} gap-3`}>
+      {products.map((item, index) => {
         const props = {
-          key: item.id,
           id: item.id,
           title: item.name,
           price: item.price,
@@ -34,19 +34,7 @@ export default function ListProduct({ products }: ListProductProps) {
           onclick: () => handleItemDetail(item.id),
         };
 
-        return (
-          <div key={item.id} className="border p-4 rounded-lg shadow">
-            <ShoesItem {...props} />
-            <div className="flex justify-between mt-4">
-              <Button primary onClick={() => handleAddToCart(item.id)}>
-                Thêm vào giỏ hàng
-              </Button>
-              <Button outline onClick={() => handleItemDetail(item.id)}>
-                Xem chi tiết
-              </Button>
-            </div>
-          </div>
-        );
+        return <ShoesItem {...props} key={index} />;
       })}
     </div>
   );

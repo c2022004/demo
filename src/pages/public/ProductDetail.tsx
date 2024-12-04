@@ -2,102 +2,124 @@ import React, { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import Image from '../../components/commons/Image';
 import Button from '../../components/commons/Button';
+import { findProductById } from '../../apis/productAPI';
+import { toast, Toaster } from 'sonner';
 
+// Định nghĩa interface cho sản phẩm
 interface ProductDetail {
   id: string;
-  img: string;
   name: string;
   price: number;
-  color: string[];
-  size: number[];
-  branch: string;
-  quantity: number;
-}
-interface ProductItem {
-  id: string;
-  img: string;
-  name: string;
-  price: number;
-  color: string;
-  size: number;
-  branch: string;
-  quantity: number;
+  shortDescription?: string;
+  longDescription?: string;
+  img: { urlImage: string }[];
+  color?: string[];
+  size?: number[];
+  branch?: string;
+  quantity?: number;
 }
 
 function ProductDetail() {
-  const product: ProductDetail = {
-    id: 'hkjđásdfsdsfka',
-    img: 'https://tse4.mm.bing.net/th?id=OIP.S5JMx5xm1EZtsIXm9_XfxQHaHa&pid=Api&P=0&h=180',
-    price: 50000,
-    name: 'giầy nike ',
-    color: ['xanh lá', 'xanh dương', 'vàng'],
-    size: [43, 42, 41, 40],
-    branch: 'adidas',
-    quantity: 2,
-  };
-
+  const [product, setProduct] = useState<ProductDetail | null>(null);
   const [searchParams] = useSearchParams();
-  const [color, setColor] = useState(product.color[0]);
-  const [size, setSize] = useState(product.size[0]);
+  const [color, setColor] = useState('');
+  const [size, setSize] = useState<number | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   // Lấy giá trị của tham số 'id'
   const productId = searchParams.get('id') || null;
 
-  // Xử lý khi chọn màu
-  const handleChangeColor = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setColor(e.target.value); // Lấy giá trị từ select
+  useEffect(() => {
+    const fetchProductDetail = async () => {
+      if (!productId) {
+        setError('Không tìm thấy ID sản phẩm');
+        setLoading(false);
+        return;
+      }
+
+      try {
+        const response = await findProductById(productId);
+        
+        if (response.data) {
+          setProduct(response.data);
+          // Khởi tạo giá trị mặc định cho color và size nếu cần
+          setColor(response.data.color?.[0] || '');
+          setSize(response.data.size?.[0] || null);
+        } else {
+          setError('Không tìm thấy sản phẩm');
+        }
+      } catch (err) {
+        setError('Lỗi khi tải thông tin sản phẩm');
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProductDetail();
+  }, [productId]);
+
+   // Xử lý khi chọn màu
+   const handleChangeColor = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setColor(e.target.value);
   };
 
   // Xử lý khi chọn kích thước
   const handleChangeSize = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setSize(Number(e.target.value)); // Lấy giá trị từ select và chuyển về kiểu số
+    setSize(Number(e.target.value));
   };
 
-  const handleAddToCart = (id: string | null) => {
+  const handleAddToCart = () => {
+    if (!product) return;
+
     // Lấy danh sách sản phẩm từ localStorage (nếu có)
-    const items: ProductItem[] = JSON.parse(localStorage.getItem('cartItems') || '[]');
+    const items: ProductDetail[] = JSON.parse(localStorage.getItem('cartItems') || '[]');
   
     const existingItemIndex = items.findIndex(
       (existingItem) => 
-        existingItem.id === product.id && 
-        existingItem.color === color && 
-        existingItem.size === size
+        existingItem.id === product.id
+      //  && 
+        // existingItem.color === color && 
+        // existingItem.size === size
     );
   
     if (existingItemIndex > -1) {
       // Nếu sản phẩm đã tồn tại, tăng số lượng
-      items[existingItemIndex].quantity += 1;
+      items[existingItemIndex].quantity = (items[existingItemIndex].quantity || 0) + 1;
     } else {
       // Nếu chưa tồn tại, thêm mới
-      const newItem: ProductItem = {
-        id: product.id, 
-        name: product.name,
-        price: product.price, 
-        branch: product.branch, 
-        img: product.img,
+      const newItem: ProductDetail = {
+        ...product,
         quantity: 1,
-        color: color, 
-        size: size
+        // color: color, 
+        // size: size
       };
       items.push(newItem);
+
     }
   
     // Lưu lại vào localStorage
     localStorage.setItem('cartItems', JSON.stringify(items));
-  
-    alert('Đã thêm sản phẩm vào giỏ hàng');
+    toast.success("Thêm vào giỏ hàng thành công")
   };
 
   const handleCheckoutNow = () => {
-    handleAddToCart(productId);
+    handleAddToCart();
     // navigate('/checkout');
   };
+  if (loading) return <div>Đang tải...</div>;
+  if (error) return <div>{error}</div>;
+  if (!product) return <div>Không tìm thấy sản phẩm</div>;
 
   return (
     <div className="flex text-lg justify-between">
       <div className="w-1/3 pr-4">
-        <div className="w-full h-2/3">
-          <Image classes="w-full h-full rounded-lg object-cover" src={product.img} />
+        <div className="w-full h-full">
+          <Image 
+            classes="w-full h-full rounded-lg object-cover" 
+            src={product.img?.[0]?.urlImage || ''} 
+          />
         </div>
       </div>
       <div className="w-1/3 pr-4">
@@ -105,69 +127,65 @@ function ProductDetail() {
           <div className="w-3/5 flex text-left">
             <div className="w-1/2 flex flex-col">
               <span>Tên sản phẩm: </span>
-              <span>Loại: </span>
+              <span>Mô tả: </span>
+              <span>Giá: </span>
               <span>Màu: </span>
-              <span>Thương hiệu: </span>
               <span>Kích cỡ: </span>
             </div>
             <div className="w-1/2 flex justify-start flex-col">
-              <span>{product.name}</span>
-              <span>Giày thể thao</span>
+              <span className='text-red-500 font-medium'>{product.name}</span>
+              <span>{product.shortDescription || 'Không có mô tả'}</span>
+              <span>{product.price} VND</span>
               <span>
                 <select
                   name="shoes-color"
                   className="p-0 w-40 border rounded-md focus:outline-none"
                   id="shoes-color"
-                  value={color} // Hiển thị màu đã chọn
+                  value={color}
                   onChange={handleChangeColor}
                 >
-                  {product.color.map((item, index) => (
-                    <option key={index} value={item}>
-                      {item}
-                    </option>
-                  ))}
+                  {/* Thêm các option cho màu sắc nếu có */}
+                  <option value="">Chọn màu</option>
                 </select>
               </span>
-              <span>{product.branch}</span>
               <span>
                 <select
                   name="shoes-size"
                   className="p-0 w-40 border rounded-md focus:outline-none"
                   id="shoes-size"
-                  value={size} // Hiển thị size đã chọn
+                  value={size || ''}
                   onChange={handleChangeSize}
                 >
-                  {product.size.map((item, index) => (
-                    <option key={index} value={item}>
-                      {item}
-                    </option>
-                  ))}
+                  {/* Thêm các option cho kích thước nếu có */}
+                  <option value="">Chọn size</option>
                 </select>
               </span>
             </div>
           </div>
         </div>
         <div className="flex justify-between items-center mt-4">
-         
           <Button
-            className=" bg-red-300 focus:outline-none hover:bg-red-400 w-2/3"
+            className="bg-red-300 focus:outline-none hover:bg-red-400 w-1/3"
             onClick={handleCheckoutNow}
           >
             Mua ngay
           </Button>
           <Button
-            className=" bg-blue-300 focus:outline-none hover:bg-blue-400 w-1/3"
-            onClick={() => handleAddToCart(productId)}
+            className="bg-blue-300 focus:outline-none hover:bg-blue-400 w-2/3"
+            onClick={handleAddToCart}
           >
-            Thêm vào sản phẩm
+            Thêm vào giỏ hàng
           </Button>
         </div>
+        <div>{product.longDescription}</div>
       </div>
-      <div className="w-1/3 pr-4 ">
-        <Image src={product.img} />
+      <div className="w-1/3 pr-4">
+        {product.img?.[1] && (
+          <Image src={product.img[1].urlImage} />
+        )}
       </div>
+      <Toaster richColors position='top-right'/>
     </div>
   );
 }
-
 export default ProductDetail;

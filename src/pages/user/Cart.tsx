@@ -3,10 +3,11 @@ import CartItem from "../../components/commons/CartItem";
 import useFormatCurrency from "../../hooks/useFormatCurrency";
 import Button from "../../components/commons/Button";
 import { Navigate, useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 
 interface dataCart {
   id: string;
-  img: string;
+  img: { urlImage: string }[]; // Cho phép cả string và mảng object
   name: string;
   price: number;
   color: string[];
@@ -17,7 +18,7 @@ interface dataCart {
 }
 interface checkOut {
   id: string;
-  img: string;
+  img: string | { urlImage: string }[];
   name: string;
   price: number;
   colorItem: string;
@@ -33,54 +34,47 @@ function Cart() {
   const [item, setItem] = useState<dataCart[]>([]);
   const [checkOut, setCheckOut] = useState<checkOut[]>([]);
   useEffect(() => {
-    const dataCart: dataCart[] = [
-      {
-        id: "hkjdsfka",
-        img: "giay1.jpg",
-        price: 50000,
-        name: "cang",
-        color: ["xanh lá", "xanh dương", "vàng"],
-        size: [43, 42, 41, 40],
-        branch: "adidas",
-        quantity: 2,
-        isChecked: false,
-      },
-      {
-        id: "hkjdsdfka",
-        img: "giay2.jpg",
-        price: 50000,
-        name: "cang",
-        color: ["xanh lá", "xanh dương", "vàng"],
-        size: [43, 42, 41, 40],
-        branch: "adidas",
-        quantity: 2,
-        isChecked: false,
-      },
-      {
-        id: "hkjdsffaka",
-        img: "giay3.jpeg",
-        price: 50000,
-        name: "cang",
-        color: ["xanh lá", "xanh dương", "vàng"],
-        size: [43, 42, 41, 40],
-        branch: "adidas",
-        quantity: 2,
-        isChecked: false,
-      },
-      {
-        id: "hkjdsfdaeka",
-        img: "giay4.jpg",
-        price: 50000,
-        name: "cang",
-        color: ["xanh lá", "xanh dương", "vàng"],
-        size: [43, 42, 41, 40],
-        branch: "adidas",
-        quantity: 4,
-        isChecked: false,
-      },
-    ];
+    const getCartItemsFromLocalStorage = (): dataCart[] => {
+      try {
+        // Lấy dữ liệu từ localStorage
+        const cartItemsJson = localStorage.getItem('cartItems');
 
-    setItem(dataCart);
+        // Kiểm tra nếu không có dữ liệu
+        if (!cartItemsJson) {
+          return [];
+        }
+
+        // Parse JSON và ép kiểu
+        const parsedItems = JSON.parse(cartItemsJson);
+
+
+        // Validate và chuyển đổi các item sang đúng kiểu dataCart
+        const cartItems: dataCart[] = parsedItems.map((item: any) => ({
+          id: item.id || '',
+          img: Array.isArray(item.img)
+            ? item.img
+            : (item.img ? [{ img: item.img }] : []), // Chuyển đổi img thành mảng các object
+          name: item.name || '',
+          price: item.price || 0,
+          color: item.color || [],
+          size: item.size || [],
+          branch: item.branch || '',
+          quantity: item.quantity || 1,
+          isChecked: item.isChecked || false
+        }));
+
+        return cartItems;
+      } catch (error) {
+        toast.error('Lỗi khi parse dữ liệu giỏ hàng!')
+        return [];
+      }
+    };
+
+    // Sử dụng
+    const cartItems = getCartItemsFromLocalStorage();
+
+    console.log("sp local", cartItems[0]);
+    setItem(cartItems);
   }, []);
 
 
@@ -93,6 +87,16 @@ function Cart() {
   }, [item]); // Chỉ tính lại khi `item` thay đổi
 
 
+
+  const updateLocalStorage = (updatedItems: dataCart[]) => {
+    try {
+      console.log("update Local:", updatedItems[0]);
+
+      localStorage.setItem('cartItems', JSON.stringify(updatedItems));
+    } catch (error) {
+      toast.error('Lỗi khi cập nhật giỏ hàng');
+    }
+  };
 
   const handleChangeQuantity = (
     e: React.ChangeEvent<HTMLInputElement>,
@@ -110,84 +114,87 @@ function Cart() {
       return;
     }
 
-    setItem((prevItems) =>
-      prevItems.map((item) => (item.id === id ? { ...item, quantity } : item))
+    const updatedItems = item.map((item) =>
+      item.id === id ? { ...item, quantity } : item
     );
+
+    setItem(updatedItems);
+    updateLocalStorage(updatedItems);
   };
 
   //giam so luong
   const handleMinusQuanttity = (id: string) => {
-    setItem((prevItems) =>
-      prevItems.map((item) =>
-        item.id === id
-          ? {
-            ...item,
-            quantity: item.quantity > 1 ? item.quantity - 1 : item.quantity,
-          }
-          : item
-      )
+    const updatedItems = item.map((item) =>
+      item.id === id
+        ? {
+          ...item,
+          quantity: item.quantity > 1 ? item.quantity - 1 : item.quantity,
+        }
+        : item
     );
+
+    setItem(updatedItems);
+    updateLocalStorage(updatedItems);
   };
 
   //them tăng so luong
   const handleAddQuantity = (id: string) => {
-    setItem((prevItems) =>
-      prevItems.map((item) =>
-        item.id === id
-          ? {
-            ...item,
-            quantity: item.quantity < 999 ? item.quantity + 1 : item.quantity,
-          }
-          : item
-      )
+    const updatedItems = item.map((item) =>
+      item.id === id
+        ? {
+          ...item,
+          quantity: item.quantity < 999 ? item.quantity + 1 : item.quantity,
+        }
+        : item
     );
+
+    setItem(updatedItems);
+    updateLocalStorage(updatedItems);
   };
 
   //xoa san pham
   const handleRemoveItem = (id: string) => {
     let checked: Boolean = confirm("Bạn có muốn xóa sản phẩm này không!");
     if (checked) {
-      setItem((prevItems) => prevItems.filter((item) => item.id !== id));
+      const updatedItems = item.filter((item) => item.id !== id);
+      setItem(updatedItems);
+      updateLocalStorage(updatedItems);
     }
   };
 
   //tick chon san pham
   const handleChecked = (id: string) => {
-
-    setItem((prevItems) =>
-      prevItems.map((item) =>
-        item.id === id
-          ? {
-            ...item,
-            isChecked: !item.isChecked
-          }
-          : item
-      )
+    const updatedItems = item.map((item) =>
+      item.id === id
+        ? {
+          ...item,
+          isChecked: !item.isChecked
+        }
+        : item
     );
+
+    setItem(updatedItems);
+    updateLocalStorage(updatedItems);
   }
 
 
   //day san pham len localStorege 
-
-
-  console.log(item);
-
   const handelRediractCheckout = () => {
     const selectedItems = item.filter((cartItem) => cartItem.isChecked === true);
-  
+
     if (selectedItems.length === 0) {
       alert("Vui lòng chọn ít nhất một sản phẩm để thanh toán!");
       return;
     }
-  
+
     const checkoutItems: checkOut[] = selectedItems.map((cartItem) => {
       // Lấy size và color từ DOM
       const sizeInput = document.querySelector(`#shoes-size-${cartItem.id}`) as HTMLInputElement | null;
       const colorInput = document.querySelector(`#shoes-color-${cartItem.id}`) as HTMLInputElement | null;
-  
+
       const sizeItem = sizeInput ? parseInt(sizeInput.value) : cartItem.size[0]; // Dùng giá trị mặc định nếu không chọn
       const colorItem = colorInput ? colorInput.value : cartItem.color[0]; // Dùng màu đầu tiên nếu không chọn
-  
+
       // Tạo đối tượng checkOut
       return {
         id: cartItem.id,
@@ -201,16 +208,16 @@ function Cart() {
         isChecked: true,
       };
     });
-  
+
     setCheckOut(checkoutItems);
-  
+
     // Lưu vào localStorage
     localStorage.setItem("checkOut", JSON.stringify(checkoutItems));
-  
+
     // Điều hướng tới trang thanh toán
     navigate("/thanh-toan");
   };
-  
+
   return (
     <>
       <div>
