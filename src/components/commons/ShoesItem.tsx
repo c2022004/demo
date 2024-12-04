@@ -13,7 +13,8 @@ interface ProdcutPtops {
   small?: boolean;
   medium?: boolean;
   large?: boolean;
-  price?: number
+  price?: number; 
+  index?:number;
   onclick: (id: string) => void;
 }
 function ShoesItem({
@@ -29,7 +30,8 @@ function ShoesItem({
   classesTitle = " text-md w-full text-center",
   classesDescription = "  text-md w-full text-center",
   price = 0, 
-  onclick
+  onclick,
+  index
 }: ProdcutPtops) {
   //điều chỉnh props
 const priceItem = useFormatCurrency(price)
@@ -60,11 +62,13 @@ const priceItem = useFormatCurrency(price)
   
 
   return (
-    <div className={classes + " w-32 flex flex-col items-center cursor-pointer justify-center"} onClick={() => {onclick(id)}}>
-      <div className="w-full h-40"><Image src={image} className={classesImg} /></div>
-      <div className={classesTitle}>{title}</div>
-      <div className={classesDescription}>{description}</div>
-      {large && (<div className="text-red-400 font-bold">{priceItem}</div>)}
+    <div className={`${classes} w-full flex flex-col items-center justify-center cursor-pointer`} >
+      <div className="w-40 h-40 flex items-center justify-center" onClick={() => {onclick(id)}}>
+        <Image src={image} className={classesImg} />
+      </div>
+      <div className={`${classesTitle} text-center`}>{title}</div>
+      <div className={`${classesDescription} text-center`}>{description}</div>
+      {large && (<div className="text-red-400 font-bold text-center">{priceItem}</div>)}
     </div>
   );
 }

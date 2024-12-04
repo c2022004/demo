@@ -68,7 +68,7 @@ const userConfig : RouteConfig[]= [
     isPrivate: true,
   },
   {
-    path: userRoutes.addToCart,
+    path: userRoutes.cart,
     component: Cart,
     layout: DefaultLayout,
     isPrivate: true,

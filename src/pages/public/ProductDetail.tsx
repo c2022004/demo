@@ -3,6 +3,7 @@ import { useSearchParams } from 'react-router-dom';
 import Image from '../../components/commons/Image';
 import Button from '../../components/commons/Button';
 import { findProductById } from '../../apis/productAPI';
+import { toast, Toaster } from 'sonner';
 
 // Định nghĩa interface cho sản phẩm
 interface ProductDetail {
@@ -11,7 +12,7 @@ interface ProductDetail {
   price: number;
   shortDescription?: string;
   longDescription?: string;
-  images: { urlImage: string }[];
+  img: { urlImage: string }[];
   color?: string[];
   size?: number[];
   branch?: string;
@@ -95,12 +96,12 @@ function ProductDetail() {
         // size: size
       };
       items.push(newItem);
+
     }
   
     // Lưu lại vào localStorage
     localStorage.setItem('cartItems', JSON.stringify(items));
-  
-    alert('Đã thêm sản phẩm vào giỏ hàng');
+    toast.success("Thêm vào giỏ hàng thành công")
   };
 
   const handleCheckoutNow = () => {
@@ -114,10 +115,10 @@ function ProductDetail() {
   return (
     <div className="flex text-lg justify-between">
       <div className="w-1/3 pr-4">
-        <div className="w-full h-2/3">
+        <div className="w-full h-full">
           <Image 
             classes="w-full h-full rounded-lg object-cover" 
-            src={product.images?.[0]?.urlImage || ''} 
+            src={product.img?.[0]?.urlImage || ''} 
           />
         </div>
       </div>
@@ -132,7 +133,7 @@ function ProductDetail() {
               <span>Kích cỡ: </span>
             </div>
             <div className="w-1/2 flex justify-start flex-col">
-              <span>{product.name}</span>
+              <span className='text-red-500 font-medium'>{product.name}</span>
               <span>{product.shortDescription || 'Không có mô tả'}</span>
               <span>{product.price} VND</span>
               <span>
@@ -176,12 +177,14 @@ function ProductDetail() {
             Thêm vào giỏ hàng
           </Button>
         </div>
+        <div>{product.longDescription}</div>
       </div>
       <div className="w-1/3 pr-4">
-        {product.images?.[1] && (
-          <Image src={product.images[1].urlImage} />
+        {product.img?.[1] && (
+          <Image src={product.img[1].urlImage} />
         )}
       </div>
+      <Toaster richColors position='top-right'/>
     </div>
   );
 }

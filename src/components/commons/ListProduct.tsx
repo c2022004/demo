@@ -7,7 +7,7 @@ interface ListProductProps {
 }
 
 export default function ListProduct({ products }: ListProductProps) {
-  const gridColumns = Math.min(4, products.length);
+  const gridColumns = 4
   const navigete = useNavigate()
 
   const handleItemDetail = (id: string) => {
@@ -18,10 +18,9 @@ export default function ListProduct({ products }: ListProductProps) {
   console.log("List product: " , products[1]?.images);
   
   return (
-    <div className={`grid grid-cols-${gridColumns} gap-4`}>
-      {products.map((item) => {
+    <div className={`grid grid-cols-${gridColumns} gap-3`}>
+      {products.map((item, index) => {
         const props = {
-          key: item.id,
           id: item.id,
           title: item.name,
           price: item.price,
@@ -31,7 +30,7 @@ export default function ListProduct({ products }: ListProductProps) {
           onclick: () => handleItemDetail(item.id),
         };
 
-        return <ShoesItem {...props} />;
+        return <ShoesItem {...props} key={index} />;
       })}
     </div>
   );

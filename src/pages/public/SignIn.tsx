@@ -5,6 +5,7 @@ import Button from "../../components/commons/Button";
 import Image from "../../components/commons/Image";
 import { SignIn } from "../../types/userTypes";
 import { addUser } from "../../apis/userAPI";
+import { toast, Toaster } from "sonner";
 
 interface Logo {
   name: string;
@@ -152,6 +153,7 @@ function SignIn() {
     
       // Đợi các giá trị state được cập nhật
       if (!checkEmail || !checkPassowrd || !checkConfirmPassword || !checkDateOfBirth) {
+        toast.error("Thông tin không hợp lệ")
         return;
       }
     
@@ -166,14 +168,15 @@ function SignIn() {
         
         const response = await addUser(signInData);
         console.log("kết quả đăng ký: ",response.message);
-    
+        
+        toast.success("Đăng ký thành công")
         // Reset form
         setEmail("");
         setPassword("");
         setConfirmPassword("");
         setDateOfBirth(undefined); // Hoặc một giá trị mặc định
       } catch (error) {
-        alert("Đăng ký thất bại. Vui lòng kiểm tra lại thông tin.");
+        toast.error("Đăng ký thất bại")
         console.error(error);
       }
     };
@@ -221,6 +224,7 @@ function SignIn() {
           ))}
         </div>
       </div>
+      <Toaster position="top-right"/>
     </div>
   );
 }

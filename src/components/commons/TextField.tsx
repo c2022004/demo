@@ -12,6 +12,7 @@ interface TextFieldProps {
   className?: string;
   value?:string; 
   error?: string; 
+  multiple?:boolean;
 }
 
 function TextField({
@@ -25,7 +26,8 @@ function TextField({
   children, // Thêm children vào props
   className,
   value,
-  error
+  error,
+  multiple
 }: TextFieldProps) {
 
   let classes = ` block w-full rounded-md border-0 py-1.5 pl-7 pr-20
@@ -52,6 +54,8 @@ function TextField({
             onChange={onChange}
             placeholder={placeholder}
             className={classes}
+            multiple = {multiple}
+            value={value}
           />
         </div>
       ) : (
