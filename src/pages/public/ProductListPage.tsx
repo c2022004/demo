@@ -1,9 +1,28 @@
 import React, { useEffect, useState } from "react";
-import { fetchProducts } from "../../apis/productAPI";
+import { fetchProducts } from "../../apis/productAPI"; // Không thay đổi
 import ListProduct from "../../components/commons/ListProduct";
-import LoadingSpinner from "../../components/commons/LoadingSpinner";
-import ErrorAlert from "../../components/commons/ErrorAlert";
-import { featuredProducts } from "../../data/product"; // Import dữ liệu tạm
+import LoadingSpinner from "../../components/commons/LoadingSpinner"; // Component loading
+import ErrorAlert from "../../components/commons/ErrorAlert"; // Component lỗi
+
+// Dữ liệu tạm được khai báo trong cùng file
+const temporaryProducts = [
+  {
+    id: "1",
+    name: "Giày Thể Thao Nam Bitis Hunter",
+    price: 854000,
+    images: [{ urlImage: "/src/assets/img/shoe1.jpg" }],
+    shortDescription: "Giày thể thao cao cấp.",
+    longDescription: "Giày thể thao phù hợp cho mọi lứa tuổi.",
+  },
+  {
+    id: "2",
+    name: "Giày Thể Thao Nữ Bitis Hunter",
+    price: 754000,
+    images: [{ urlImage: "/src/assets/img/shoe2.jpg" }],
+    shortDescription: "Giày thể thao nữ hiện đại.",
+    longDescription: "Giày thể thao nữ với thiết kế trẻ trung.",
+  },
+];
 
 export interface Product {
   id: string;
@@ -16,28 +35,25 @@ export interface Product {
 
 const ProductListPage: React.FC = () => {
   const [products, setProducts] = useState<Product[]>([]);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [error, setError] =useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const fetchProductsList = async () => {
+    const fetchData = async () => {
       try {
         setIsLoading(true);
-        const data = await fetchProducts();
-        if (data && data.length > 0) {
-          setProducts(data);
-        } else {
-          setProducts(featuredProducts); // Sử dụng dữ liệu tạm
-        }
-      } catch (err) {
+        const data = await fetchProducts(); // Gọi API từ productAPI.ts
+        setProducts(data); // Cập nhật danh sách sản phẩm nếu API thành công
+      } catch (error) {
+        console.error("Lỗi khi gọi API:", error);
         setError("Không thể tải danh sách sản phẩm. Hiển thị dữ liệu tạm.");
-        setProducts(featuredProducts); // Sử dụng dữ liệu tạm
+        setProducts(temporaryProducts); // Sử dụng dữ liệu tạm nếu gặp lỗi
       } finally {
         setIsLoading(false);
       }
     };
 
-    fetchProductsList();
+    fetchData();
   }, []);
 
   if (isLoading) {

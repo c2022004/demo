@@ -57,9 +57,9 @@ const Home: React.FC = () => {
       {/* Slideshow */}
       <Slideshow
         slides={[
-          { id: 1, imageUrl: "/assets/slide1.jpg", title: "Giảm giá sốc!" },
-          { id: 2, imageUrl: "/assets/slide2.jpg", title: "Mua 1 tặng 1" },
-          { id: 3, imageUrl: "/assets/slide3.jpg", title: "Hàng mới về" },
+          { id: 1, imageUrl: "../src/assets/img/giay1.jpg", title: "Giảm giá sốc!" },
+          { id: 2, imageUrl: "../src/assets/img/giay2.jpg", title: "Mua 1 tặng 1" },
+          { id: 3, imageUrl: "../src/assets/img/giay4.jpg", title: "Hàng mới về" },
         ]}
       />
 

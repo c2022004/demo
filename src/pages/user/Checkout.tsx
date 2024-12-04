@@ -1,9 +1,12 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom"; // Import useNavigate
+import Button from "../../components/commons/Button"; // Import Button component
 
 const Checkout: React.FC = () => {
+  const navigate = useNavigate(); // Sử dụng navigate để chuyển trang
   const [voucherCode, setVoucherCode] = useState("");
   const [selectedVoucher, setSelectedVoucher] = useState("");
-  const [paymentMethod, setPaymentMethod] = useState("");
+  const [paymentMethod, setPaymentMethod] = useState<string | null>(null);
 
   const handleVoucherApply = () => {
     console.log("Mã giảm giá đã áp dụng:", voucherCode);
@@ -17,12 +20,30 @@ const Checkout: React.FC = () => {
     setPaymentMethod(method);
   };
 
+  const handleConfirmOrder = () => {
+    if (paymentMethod === "cod") {
+      alert("Đặt hàng thành công!");
+      navigate("/"); // Chuyển về trang Home
+    } else if (paymentMethod === "bank") {
+      alert("Vui lòng quét mã QR ngân hàng để thanh toán.");
+    } else if (paymentMethod === "momo") {
+      alert("Vui lòng quét mã QR MoMo để thanh toán.");
+    } else {
+      alert("Vui lòng chọn phương thức thanh toán!");
+    }
+  };
+
+  const handleBackToCart = () => {
+    navigate("/gio-hang"); // Chuyển về trang Giỏ hàng
+  };
+
   return (
     <div className="container mx-auto p-6">
-      <h1 className="text-2xl font-bold mb-6">Thông tin giao hàng</h1>
+      
 
       {/* Thông tin giao hàng */}
       <div className="mb-8 bg-gray-100 p-6 rounded-lg shadow">
+        <h1 className="text-2xl font-bold mb-6">Thông tin giao hàng</h1>
         <p className="text-sm mb-2">
           Bạn đã có tài khoản?{" "}
           <a href="/login" className="text-blue-500">
@@ -95,61 +116,6 @@ const Checkout: React.FC = () => {
             <p className="ml-auto font-bold">854,000 đ</p>
           </div>
         </div>
-
-        <div className="flex items-center justify-between mb-4">
-          <select
-            className="border rounded-lg p-2"
-            defaultValue="Chọn loại voucher"
-          >
-            <option disabled>Chọn loại voucher</option>
-            <option>Khuyến mãi</option>
-            <option>Giảm giá</option>
-          </select>
-          <input
-            type="text"
-            placeholder="Mã giảm giá"
-            value={voucherCode}
-            onChange={(e) => setVoucherCode(e.target.value)}
-            className="border rounded-lg p-2 w-64"
-          />
-          <button
-            onClick={handleVoucherApply}
-            className="bg-gray-800 text-white px-4 py-2 rounded-lg"
-          >
-            Sử dụng
-          </button>
-        </div>
-
-        <div className="flex space-x-2">
-          {["Giảm 40,000 đ", "Giảm 80,000 đ"].map((item) => (
-            <button
-              key={item}
-              onClick={() => handleVoucherSelect(item)}
-              className={`px-4 py-2 rounded-lg border ${
-                selectedVoucher === item
-                  ? "border-red-500 text-red-500"
-                  : "border-gray-300"
-              }`}
-            >
-              {item}
-            </button>
-          ))}
-        </div>
-
-        <div className="mt-6">
-          <div className="flex justify-between">
-            <span className="text-gray-600">Tạm tính</span>
-            <span className="font-bold">854,000 đ</span>
-          </div>
-          <div className="flex justify-between">
-            <span className="text-gray-600">Phí vận chuyển</span>
-            <span className="font-bold">0 đ</span>
-          </div>
-          <div className="flex justify-between border-t pt-4 mt-4">
-            <span className="font-bold">Tổng cộng</span>
-            <span className="font-bold text-red-500">854,000 đ</span>
-          </div>
-        </div>
       </div>
 
       {/* Phương thức thanh toán */}
@@ -189,12 +155,37 @@ const Checkout: React.FC = () => {
         </div>
       </div>
 
-      {/* Nút tiếp tục */}
-      <div className="flex justify-end">
-        <button className="bg-red-500 text-white px-6 py-3 rounded-lg">
-          Thanh toán
-        </button>
+      {/* Nút hành động */}
+      <div className="flex justify-between">
+        <Button primary onClick={handleBackToCart}>
+          Quay lại giỏ hàng
+        </Button>
+        <Button primary onClick={handleConfirmOrder}>
+          Xác nhận thanh toán
+        </Button>
       </div>
+
+      {/* Hiển thị hình ảnh mã QR nếu cần */}
+      {paymentMethod === "bank" && (
+        <div className="mt-6">
+          <h3 className="text-lg font-bold mb-2">Mã QR Ngân hàng</h3>
+          <img
+            src="/src/assets/img/bank-qr.png"
+            alt="Bank QR Code"
+            className="w-64 h-64 mx-auto"
+          />
+        </div>
+      )}
+      {paymentMethod === "momo" && (
+        <div className="mt-6">
+          <h3 className="text-lg font-bold mb-2">Mã QR MoMo</h3>
+          <img
+            src="/src/assets/img/momo-qr.png"
+            alt="MoMo QR Code"
+            className="w-64 h-64 mx-auto"
+          />
+        </div>
+      )}
     </div>
   );
 };
