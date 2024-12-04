@@ -1,18 +1,18 @@
 import React, { useEffect, useState } from "react";
 import ListProduct from "../../components/commons/ListProduct";
-import { fetchProducts } from "../../apis/productAPI"; // Gọi API
 import LoadingSpinner from "../../components/commons/LoadingSpinner";
 import ErrorAlert from "../../components/commons/ErrorAlert";
 import Banner from "../../components/commons/Banner";
 import Slideshow from "../../components/commons/Slideshow";
 import CategoryMenu from "../../components/commons/CategoryMenu";
-import { featuredProducts } from "../../data/product"; // Import dữ liệu tạm
+import { featuredProducts } from "../../data/product";
+import { findAllProduct } from "../../apis/productAPI"; // Sử dụng phương thức đúng
 
 export interface Product {
   id: string;
-  images: ImageData[]; 
   name: string;
   price: number;
+  images: { urlImage: string }[];
   shortDescription: string;
   longDescription: string;
 }
@@ -23,56 +23,44 @@ const Home: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchProductData = async () => {
       try {
         setIsLoading(true);
-        const data = await fetchProducts();
-        if (data && data.length > 0) {
-          setProducts(data);
-        } else {
-          console.warn("API không trả về dữ liệu. Sử dụng dữ liệu tạm.");
-          setProducts(featuredProducts); // Dữ liệu tạm
-        }
+        const data = await findAllProduct(); // Sử dụng phương thức chính xác
+        setProducts(data);
       } catch (error) {
-        console.error("Không thể kết nối tới API. Hiển thị dữ liệu tạm.");
+        console.error("API Error:", error);
         setError("Không thể tải danh sách sản phẩm. Hiển thị dữ liệu tạm.");
-        setProducts(featuredProducts); // Sử dụng dữ liệu tạm khi lỗi
+        setProducts(featuredProducts); // Hiển thị dữ liệu tạm nếu API lỗi
       } finally {
         setIsLoading(false);
       }
     };
 
-    fetchData();
+    fetchProductData();
   }, []);
 
   if (isLoading) {
-    return <LoadingSpinner message="Đang tải nội dung..." />;
+    return <LoadingSpinner message="Đang tải danh sách sản phẩm..." />;
+  }
+
+  if (error) {
+    return <ErrorAlert message={error} />;
   }
 
   return (
     <div className="container mx-auto my-8">
-      {/* Banner */}
       <Banner />
-
-      {/* Slideshow */}
       <Slideshow
-        slides={[
-          { id: 1, imageUrl: "../src/assets/img/giay1.jpg", title: "Giảm giá sốc!" },
-          { id: 2, imageUrl: "../src/assets/img/giay2.jpg", title: "Mua 1 tặng 1" },
-          { id: 3, imageUrl: "../src/assets/img/giay4.jpg", title: "Hàng mới về" },
-        ]}
+        slides={featuredProducts.map((product, index) => ({
+          id: index,
+          imageUrl: product.images[0]?.urlImage || "",
+          title: product.name,
+        }))}
       />
-
-      {/* Category Menu */}
       <CategoryMenu />
-
-      {/* Danh sách sản phẩm */}
-      <section className="mt-8">
-        <h1 className="text-3xl font-bold text-center mb-6">
-          Sản phẩm nổi bật
-        </h1>
-        <ListProduct products={products} />
-      </section>
+      <h1 className="text-3xl font-bold text-center mb-6">Danh Sách Sản Phẩm</h1>
+      <ListProduct products={products} />
     </div>
   );
 };

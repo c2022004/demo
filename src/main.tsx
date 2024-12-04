@@ -1,4 +1,4 @@
-import React, { StrictMode } from "react";
+/*import React, { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
 import "./index.css";
@@ -12,9 +12,9 @@ root.render(
       <App />
     </BrowserRouter>
   </StrictMode>
-);
+);*/
 
-/*import React from 'react';
+import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import './index.css';
@@ -32,7 +32,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
       </Routes>
     </Router>
   </React.StrictMode>
-);*/
+);
 
 
 
