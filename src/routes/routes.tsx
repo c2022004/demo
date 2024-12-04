@@ -19,6 +19,7 @@ import Profile from "../pages/user/Profile";
 import AddCategory from "../pages/admin/AddCategory";
 import LayoutAdmin from "../components/layouts/LayoutAdmin";
 import AdminHome from "../components/commons/admin/AdminHome";
+import ProductListPage from "../pages/public/ProductListPage";
 
 // Cấu hình routes theo role và layout
 const publicConfig : RouteConfig[]= [
@@ -51,7 +52,14 @@ const publicConfig : RouteConfig[]= [
     component: File ,
     layout: DefaultLayout , 
     isPrivate: false
-  }
+  },
+  
+  {
+    path: publicRoutes.productList, // Đường dẫn tới danh sách sản phẩm
+    component: ProductListPage, 
+    layout: DefaultLayout, 
+    isPrivate: false,
+  },
 ];
 
 const userConfig : RouteConfig[]= [
