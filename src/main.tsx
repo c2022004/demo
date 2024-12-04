@@ -1,4 +1,4 @@
-import React, { StrictMode } from "react";
+/*import React, { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
 import "./index.css";
@@ -12,7 +12,28 @@ root.render(
       <App />
     </BrowserRouter>
   </StrictMode>
+);*/
+
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import './index.css';
+import Checkout from './pages/user/Checkout';
+import Home from './pages/public/Home';
+
+ReactDOM.createRoot(document.getElementById('root')!).render(
+  <React.StrictMode>
+    <Router>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/checkout" element={<Checkout />} />
+      </Routes>
+    </Router>
+  </React.StrictMode>
 );
+
+
+
 
 
 
